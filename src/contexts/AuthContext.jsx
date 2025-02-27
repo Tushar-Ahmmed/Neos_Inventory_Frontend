@@ -6,7 +6,8 @@ const AuthContext = createContext();
 
 // Auth Provider Component
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("jwt") || null);
+  const [token, setToken] = useState(localStorage.getItem("TOKEN") || null);
+  const [trigger, serTrigger] = useState(false)
 
   // Function to handle login
   const login = async (FormObj) => {
@@ -17,11 +18,13 @@ export const AuthProvider = ({ children }) => {
         },
       });
 
-      if (!response.ok) throw new Error("Login failed");
+      if (response.data.status === "error") alert(response.data.message);
 
-      const data = await response.json();
-      localStorage.setItem("jwt", data.token); // Store JWT in localStorage
-      setToken(data.token); // Update context state
+      else{
+        localStorage.setItem("TOKEN", response.data.token) // Store JWT in localStorage
+        setToken(response.data.token)
+        return true
+      }
     } catch (error) {
       console.error("Login error:", error);
     }
@@ -29,12 +32,12 @@ export const AuthProvider = ({ children }) => {
 
   // Logout Function
   const logout = () => {
-    localStorage.removeItem("jwt"); // Remove token from localStorage
+    localStorage.removeItem("TOKEN"); // Remove token from localStorage
     setToken(null); // Clear context state
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider value={{ token, login, logout,trigger }}>
       {children}
     </AuthContext.Provider>
   );

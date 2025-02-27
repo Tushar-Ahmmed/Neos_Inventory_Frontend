@@ -1,23 +1,21 @@
-import axios from 'axios';
 import React, { useState } from 'react';
-
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from "react-router-dom";
 
 
 const LoginComponent = () => {
     let [FormObj, SetFormObj] = useState({email:"", password:""})
-    let [error, setError] = useState(null);
-    let [loading, setLoading] = useState(false);
-    let [result, setResult] = useState("");
+    const [loading, setLoading] = useState(false)
+    const [errordata, setError] = useState()
+    const {login} = useAuth()
+    const navigate = useNavigate()
 
 
     const onChangeHandler = (property, value)=>{
         SetFormObj(prevObj=>({
             ...prevObj,
             [property]:value
-
-        }))
-        
-        
+        }))  
     }
    
     const FormSubmit = async (e)=>{
@@ -26,20 +24,8 @@ const LoginComponent = () => {
         setError(null)
 
         try {
-            const response = await axios.post("/api/login", FormObj, {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-            
-
-            if(response.data.status === "success"){
-                setResult(response.data.token);
-            }
-            else{
-                alert(response.data.message);
-            }         
-            
+            let flag = await login(FormObj)           
+            if(flag) navigate("/dashboard") 
           } catch (error) {
             setError(error.response?.data?.message || "Something went wrong");
             console.error("Login error:", error);
