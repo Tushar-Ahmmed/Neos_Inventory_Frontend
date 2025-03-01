@@ -7,7 +7,7 @@ const LoginComponent = () => {
     let [FormObj, SetFormObj] = useState({email:"", password:""})
     const [loading, setLoading] = useState(false)
     const [errordata, setError] = useState()
-    const {login} = useAuth()
+    const {login,isAuthenticated} = useAuth()
     const navigate = useNavigate()
 
 
@@ -24,14 +24,17 @@ const LoginComponent = () => {
         setError(null)
 
         try {
-            let flag = await login(FormObj)           
-            if(flag) navigate("/dashboard") 
+            const flag = await login(FormObj)           
+            if(flag) navigate("/dashboard")
+            else  alert("Invalid Credential")
+
           } catch (error) {
-            setError(error.response?.data?.message || "Something went wrong");
-            console.error("Login error:", error);
+            setError(error.response?.data?.message || "Something went wrong")
+            console.error("Login error:", error)
+
           } finally {
             setLoading(false);
-            SetFormObj({ email: "", password: "" });
+            SetFormObj({ email: "", password: "" })
           }
     }
 

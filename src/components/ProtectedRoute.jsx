@@ -1,10 +1,12 @@
 
-import { Navigate } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { Navigate } from "react-router-dom"
+import { useAuth } from '../contexts/AuthContext'
+import { isTokenExpired } from './../utilities/TokenUtility';
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/" />;
+  const { token } = useAuth()
+  
+  return (token && !isTokenExpired()) ? children : <Navigate to="/" />
 };
 
-export default ProtectedRoute;
+export default ProtectedRoute

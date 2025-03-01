@@ -1,13 +1,16 @@
-import axios from "axios";
-import { createContext, useState, useEffect, useContext } from "react";
+import axios from "axios"
+import { createContext, useState, useEffect, useContext } from "react"
+
+
 
 // Create Authentication Context
-const AuthContext = createContext();
+const AuthContext = createContext()
 
 // Auth Provider Component
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("TOKEN") || null);
-  const [trigger, serTrigger] = useState(false)
+  const [token, setToken] = useState(localStorage.getItem('authTokenExpiration') || null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
 
   // Function to handle login
   const login = async (FormObj) => {
@@ -18,30 +21,40 @@ export const AuthProvider = ({ children }) => {
         },
       });
 
-      if (response.data.status === "error") alert(response.data.message);
+      if (response.data.status === "error"){
+        alert(response.data.message)
+        return false
+      }
 
       else{
         localStorage.setItem("TOKEN", response.data.token) // Store JWT in localStorage
+        const expirationTime = Date.now() + 4 * 60 * 60 * 1000 //4 hours in ms
+        // const expirationTime = Date.now() +  1 * 60 * 1000 //1 minutes in ms
+        localStorage.setItem('authTokenExpiration', expirationTime.toString())
         setToken(response.data.token)
+        setIsAuthenticated(true)
         return true
       }
+      
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("Login error:", error)
     }
   };
 
   // Logout Function
   const logout = () => {
-    localStorage.removeItem("TOKEN"); // Remove token from localStorage
-    setToken(null); // Clear context state
+    localStorage.removeItem("TOKEN") // Remove token from localStorage
+    localStorage.removeItem("authTokenExpiration") // Remove authTokenExpiration from localStorage
+    setToken(null) // Clear context state
+    setIsAuthenticated(false)
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout,trigger }}>
+    <AuthContext.Provider value={{ token, login, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 // Custom hook to use auth context
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext)
