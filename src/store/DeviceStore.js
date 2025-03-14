@@ -26,6 +26,20 @@ const DeviceStore = create((set)=>({
         }
     },
 
+
+
+    AddNewComputer:"",
+    AddNewComputerRequest: async(token,newDevice)=>{
+        let res = await axios.post('/api/adddevice',newDevice, {
+            headers: {
+              'authorization': token,
+            }
+          })
+        if(res){
+            set({AddNewComputer:res.data.message})
+        }
+    },
+
 }))
 
 

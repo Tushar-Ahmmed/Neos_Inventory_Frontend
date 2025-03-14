@@ -1,5 +1,5 @@
 import axios from "axios"
-import { createContext, useState, useEffect, useContext } from "react"
+import { createContext, useState, useContext } from "react"
 
 
 
@@ -10,6 +10,7 @@ const AuthContext = createContext()
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('authTokenExpiration') || null);
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [optionRender, setOptionRender] = useState()
 
 
   // Function to handle login
@@ -50,7 +51,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ token, login, logout, isAuthenticated, setOptionRender, optionRender }}>
       {children}
     </AuthContext.Provider>
   );
