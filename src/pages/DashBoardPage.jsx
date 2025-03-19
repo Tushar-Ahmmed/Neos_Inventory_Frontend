@@ -45,16 +45,16 @@ const DashBoardPage = () => {
 
                 {/* Menu */}
 
-                <div className="container mx-auto p-4">
+                <div className="container mx-auto p-4 bg-[#ffffff0d]">
                 <div className="flex flex-wrap">
-                        <div className="w-full sm:w-1/5 bg-[#428BCA] p-4 text-gray-100 h-[600px] overflow-y-scroll">
+                        <div className="w-full bg-transparent sm:w-1/5 p-4 text-gray-100 h-[600px] overflow-y-scroll">
                           <DeviceMenuComponent/>
                           <AccessoriesMenuComponent/>
                           <UsersMenuComponent/>
                           <CategoryMenuComponent/>
                           <AdministratorMenuComponent/>
                         </div>
-                        <div className="w-full sm:w-4/5 bg-[#D1FADF] p-4">
+                        <div className="w-full sm:w-4/5 bg-transparent p-4">
                             {optionRender}
                         </div>
                     </div>

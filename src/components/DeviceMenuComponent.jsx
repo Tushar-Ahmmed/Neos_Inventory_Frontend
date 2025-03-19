@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import ComputerForm from '../forms/ComputerForm';
+import AssignDeviceForm from '../forms/AssignDeviceForm';
+import UnAssignDeviceForm from '../forms/UnAsignDeviceForm';
+
 
 
 const DeviceMenuComponent = () => {
@@ -23,8 +26,8 @@ const DeviceMenuComponent = () => {
                 <div className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">All Computers</div>
                 <div className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Computer Information</div>
                 <div onClick={() => clicked(<ComputerForm/>)}  className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Add New Computer</div>
-                <div className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Assign Computer</div>
-                <div className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Un-Assign Computer</div>
+                <div onClick={() => clicked(<AssignDeviceForm/>)} className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Assign Computer</div>
+                <div onClick={() => clicked(<UnAssignDeviceForm/>)} className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Un-Assign Computer</div>
                 <div className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Update Computer's Information</div>
                 <div className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Delete Computer</div>
             </div>

@@ -36,7 +36,33 @@ const DeviceStore = create((set)=>({
             }
           })
         if(res){
-            set({AddNewComputer:res.data.message})
+            set({AddNewComputer:res.data})
+        }
+    },
+
+    AssignDeviceMessage:"",
+    AssignDeviceRequest: async(token,formData)=>{
+        let res = await axios.patch('/api/assigndevice',formData, {
+            headers: {
+              'authorization': token,
+            }
+          })
+        if(res){
+            set({AssignDeviceMessage:res.data.message})
+        }
+    },
+
+    UnAssignDeviceMessage:"",
+    UnAssignDeviceRequest: async(token,serial)=>{
+      console.log(token);
+
+        let res = await axios.patch(`/api/unassigndevice/${serial}`,{}, {
+          headers: {
+            'authorization': token,
+          },
+        });
+        if(res){
+            set({UnAssignDeviceMessage:res.data.message})
         }
     },
 
