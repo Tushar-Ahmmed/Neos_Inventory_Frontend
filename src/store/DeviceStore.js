@@ -54,8 +54,6 @@ const DeviceStore = create((set)=>({
 
     UnAssignDeviceMessage:"",
     UnAssignDeviceRequest: async(token,serial)=>{
-      console.log(token);
-
         let res = await axios.patch(`/api/unassigndevice/${serial}`,{}, {
           headers: {
             'authorization': token,
@@ -63,6 +61,18 @@ const DeviceStore = create((set)=>({
         });
         if(res){
             set({UnAssignDeviceMessage:res.data.message})
+        }
+    },
+
+    DeviceInformation:{},
+    DeviceInformationRequest: async(token,serial)=>{
+        let res = await axios.get(`/api/deviceinfo/${serial}`, {
+          headers: {
+            'authorization': token,
+          },
+        });
+        if(res){
+            set({DeviceInformation:res.data})
         }
     },
 

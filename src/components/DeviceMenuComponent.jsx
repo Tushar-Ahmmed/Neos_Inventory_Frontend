@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import ComputerForm from '../forms/ComputerForm';
 import AssignDeviceForm from '../forms/AssignDeviceForm';
 import UnAssignDeviceForm from '../forms/UnAsignDeviceForm';
+import DeviceInfoForm from '../forms/DeviceInfoForm';
 
 
 
@@ -24,7 +25,7 @@ const DeviceMenuComponent = () => {
         
             <div className={`dropdown-items mt-2 ${isOpen ? 'block' : 'hidden'} transition-all duration-300 ease-in-out text-[#000000]`} id="dropdown">
                 <div className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">All Computers</div>
-                <div className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Computer Information</div>
+                <div onClick={() => clicked(<DeviceInfoForm/>)} className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Computer Information</div>
                 <div onClick={() => clicked(<ComputerForm/>)}  className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Add New Computer</div>
                 <div onClick={() => clicked(<AssignDeviceForm/>)} className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Assign Computer</div>
                 <div onClick={() => clicked(<UnAssignDeviceForm/>)} className="dropdown-item bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-300">Un-Assign Computer</div>
