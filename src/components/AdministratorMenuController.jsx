@@ -7,6 +7,9 @@ const AdministratorMenuComponent = () => {
     const toggleDropdown = () => {
         setIsOpen(prevState => !prevState)
       }
+      const clicked = (RednerData)=>{
+        setOptionRender(RednerData)
+    }
     return (
         <div className="parent-div relative w-full p-1 parent-div relative w-full p-1 bg-[#fafafa11] overflow-hidden rounded mb-2">
             <button className="dropdown-btn px-2 py-0.5 bg-transparent border-gradient-reverse text-gray-300 text-left" onClick={toggleDropdown}>Administrator Menu</button>
