@@ -76,6 +76,29 @@ const DeviceStore = create((set)=>({
         }
     },
 
+    DeviceUpdateMesage:"",
+    DeviceUpdateRequest: async(token,formData)=>{
+        let res = await axios.patch(`/api/updatedevice/${formData.Serial}`, formData, {
+          headers: {
+            'authorization': token,
+          },
+        });
+        if(res){
+            set({DeviceUpdateMesage:res.data.message})
+        }
+    },
+    DeviceDeleteMessage:"",
+    DeviceDeleteRequest: async(token,serial)=>{
+        let res = await axios.delete(`/api/deletedevice/${serial}`, {
+          headers: {
+            'authorization': token,
+          },
+        });
+        if(res){
+            set({DeviceDeleteMessage:res.data.message})
+        }
+    },
+
 }))
 
 

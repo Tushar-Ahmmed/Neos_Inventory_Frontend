@@ -1,8 +1,8 @@
 import React, {useState,useEffect } from 'react';
 import DeviceStore from '../store/DeviceStore';
 
-const UnAssignDeviceForm = () => {
-  const {UnAssignDeviceRequest,UnAssignDeviceMessage} = DeviceStore()
+const ComputerDeleteForm = () => {
+  const {DeviceDeleteRequest,DeviceDeleteMessage} = DeviceStore();
   const [messageTrigger, setMessageTrigger] = useState(0);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,24 +19,25 @@ const UnAssignDeviceForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isConfirmed = window.confirm("Are you sure you want to un-assign this item?");
+    
+    const isConfirmed = window.confirm("Are you sure you want to delete this item?");
     if (!isConfirmed) return;
     setHasSubmitted(true);
-    await UnAssignDeviceRequest(localStorage.getItem("TOKEN"),formData.serial);
+    await DeviceDeleteRequest(localStorage.getItem("TOKEN"),formData.serial);
     setMessageTrigger((prev) => prev + 1);
   };
 
   useEffect(()=>{
-    if(hasSubmitted && UnAssignDeviceMessage){
-      alert(UnAssignDeviceMessage);
-      setFormData({serial:""});
+    if(hasSubmitted && DeviceDeleteMessage){
+        alert(DeviceDeleteMessage);
+        setFormData({serial:""});
     }
   }
   , [messageTrigger])
  
   return (
     <form onSubmit={handleSubmit} className="max-w-1/2 mx-auto p-6 bg-[#ffffff0d] rounded-lg shadow-lg">
-        <h2 className="text-2xl font-semibold text-white text-center">Un-Assign Computer</h2>
+        <h2 className="text-2xl font-semibold text-[#FD4075] text-center mb-5">Computer Delete</h2>
 
       <div className="flex space-x-4 mb-4">
         <div className="flex-1">
@@ -56,4 +57,4 @@ const UnAssignDeviceForm = () => {
   );
 };
 
-export default UnAssignDeviceForm;
+export default ComputerDeleteForm;

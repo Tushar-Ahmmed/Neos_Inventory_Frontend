@@ -1,30 +1,30 @@
 import React, { useState,useEffect } from 'react';
 import DeviceStore from '../store/DeviceStore';
 
-const ComputerForm = () => {
+const DeviceUpdateDataForm = ({Device}) => {
 
-  const {AddNewComputerRequest, AddNewComputer} = DeviceStore()
+  const {DeviceUpdateRequest, DeviceUpdateMesage} = DeviceStore()
     const [messageTrigger, setMessageTrigger] = useState(0);
     const [hasSubmitted, setHasSubmitted] = useState(false);
   const [formData, setFormData] = useState({
-    Type: '',
-    Brand: '',
-    Model: '',
-    Serial: '',
-    Vendor: '',
-    Processor: '',
-    GHz: '',
-    Gen: '',
-    RAM: '',
-    BUS: '',
-    Screen: '',
-    Storage_Type: '',
-    Storage_Size: '',
-    Condition: '',
-    Warentty_Policy: '',
-    purchase_date: '',
+    Type: Device.Type,
+    Brand: Device.Brand,
+    Model: Device.Model,
+    Serial: Device.Serial,
+    Vendor: Device.Vendor,
+    Processor: Device.Processor,
+    GHz: Device.GHz,
+    Gen: Device.Gen,
+    RAM: Device.RAM,
+    BUS: Device.BUS,
+    Screen: Device.Screen,
+    Storage_Type: Device.Storage_Type,
+    Storage_Size: Device.Storage_Size,
+    Condition: Device.Condition,
+    Warentty_Policy: Device.Warentty_Policy,
+    purchase_date: new Date(Device.purchase_date).toISOString().split('T')[0],
   });
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -35,18 +35,16 @@ const ComputerForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isConfirmed = window.confirm("Are you sure you want to add this item?");
-    if (!isConfirmed) return;
     setHasSubmitted(true);
-    await AddNewComputerRequest(localStorage.getItem("TOKEN"),formData);
+    await DeviceUpdateRequest(localStorage.getItem("TOKEN"), formData);
     setMessageTrigger((prev) => prev + 1);
   };
 
   useEffect(()=>{
-    if(hasSubmitted && AddNewComputer){
-      alert(AddNewComputer.message)
+    if(hasSubmitted && DeviceUpdateMesage){
+      alert(DeviceUpdateMesage)
     }
-    if(AddNewComputer.status === "Success" ){
+    if(DeviceUpdateMesage && hasSubmitted){
       setFormData({
         Type: '',
         Brand: '',
@@ -71,7 +69,7 @@ const ComputerForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-full mx-auto p-6 bg-[#ffffff0d] rounded-lg shadow-lg text-gray-100">
-        <h2 className="text-2xl font-semibold text-gray-100 text-center">Add New Computer</h2>
+        <h2 className="text-2xl font-semibold text-center mb-5 text-[#FD4075]">Update Computer's Information</h2>
 
       <div className="flex space-x-4 mb-4">
         <div className="flex-1">
@@ -116,7 +114,7 @@ const ComputerForm = () => {
       <div className="flex space-x-4 mb-4">
         <div className="flex-1">
           <label htmlFor="Serial" className="block text-sm font-medium text-gray-100">Serial</label>
-          <input id="Serial" name="Serial" type="text" required value={formData.Serial} onChange={handleChange} className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:bg-[#2e3c48]"/>
+          <input disabled id="Serial" name="Serial" type="text" required value={formData.Serial} onChange={handleChange} className="mt-1 bg-gray-500 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:bg-[#2e3c48]"/>
         </div>
 
         <div className="flex-1">
@@ -255,4 +253,4 @@ const ComputerForm = () => {
   );
 };
 
-export default ComputerForm;
+export default DeviceUpdateDataForm;

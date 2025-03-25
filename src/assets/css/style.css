@@ -1,0 +1,16 @@
+/* In your CSS file (or within a <style> block) */
+@layer utilities {
+    .border-gradient {
+      border-width: 3px; /* Adjust border width as needed */
+      border-style: solid;
+      border-image: linear-gradient(45deg, #ff6f61, #6a5acd) 1;
+    }
+    .border-gradient-reverse {
+      border-width: 3px; /* Adjust border width as needed */
+      border-style: solid;
+      border-image: linear-gradient(45deg, #6a5acd, #ff6f61) 1;
+    }
+    .res{
+        background-color: #db6d67be;
+    }
+  }

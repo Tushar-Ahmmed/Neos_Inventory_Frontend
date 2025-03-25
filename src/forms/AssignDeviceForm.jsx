@@ -20,6 +20,8 @@ const AssignDeviceForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const isConfirmed = window.confirm("Are you sure you want to assign this item?");
+    if (!isConfirmed) return;
     setHasSubmitted(true);
     await AssignDeviceRequest(localStorage.getItem("TOKEN"),formData);
     setMessageTrigger((prev) => prev + 1);
