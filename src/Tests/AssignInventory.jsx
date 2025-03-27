@@ -1,11 +1,11 @@
 import React, { use, useState } from "react";
 import AccessoriesStore from "../store/AccessoriesStore";
-import  DeviceStore from "../store/DeviceStore"
+import UserStore from './../store/UserStore';
 
 
 const AssignInventory = () => {
   const { AllAccessories } = AccessoriesStore();
-  const { AllDevices } = DevicesStore();
+  const { AllUsers } = UserStore();
   const [user, setUser] = useState("");
   const [items, setItems] = useState([""]);
   const [addmore, setAddmore] = useState(false);
@@ -37,12 +37,16 @@ const AssignInventory = () => {
   return (
     <div className="p-6 max-w-5/6 mx-auto text-gray-200">
       <h2 className="text-xl font-bold mb-4">Assign Accessories</h2>
+
       <div className="max-w-1/3">
-        <select  className="w-full p-2 border rounded-md mb-2 bg-[#322D3C]" onChange={(e) => handleUserChange(e.target.value)} value={user}>
-          <option disabled selected value="">Select User</option>
-          <option value="user1">User 1</option>
-          <option value="user2">User 2</option>
-        </select>
+        <label htmlFor="email" className="block mb-2">User Email</label>
+        <input list="users" id="email" name="email" className="w-full p-2 border rounded-md mb-2 bg-[#322D3C]" onChange={(e) => handleUserChange(e.target.value)} value={user} />
+        <datalist id="users">
+        {AllUsers.map((user, index) => (
+          <option key={index} value={user.Email} />
+        ))}
+        </datalist>
+        
       </div>
       <div className="grid grid-cols-4 gap-4">
         {items.map((item, index) => (
