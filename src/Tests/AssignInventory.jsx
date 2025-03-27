@@ -1,9 +1,14 @@
-import React, { useState } from "react";
-import DeleteBtnSm from "../buttons/DeleteBtnSm";
+import React, { use, useState } from "react";
+import AccessoriesStore from "../store/AccessoriesStore";
+import  DeviceStore from "../store/DeviceStore"
+
 
 const AssignInventory = () => {
+  const { AllAccessories } = AccessoriesStore();
+  const { AllDevices } = DevicesStore();
   const [user, setUser] = useState("");
   const [items, setItems] = useState([""]);
+  const [addmore, setAddmore] = useState(false);
 
   const handleUserChange = (value) => {
     setUser(value);
@@ -13,45 +18,57 @@ const AssignInventory = () => {
     const newItems = [...items];
     newItems[index] = value;
     setItems(newItems);
+    setAddmore(true);
   };
 
   const handleAddMore = () => {
     setItems([...items, ""]);
   };
+  const handleDeleteItem = (index) => {
+    const newItems = [...items];
+    newItems.splice(index, 1);
+    setItems(newItems);
+    if(newItems.length === 0) {
+      setAddmore(false);
+      setItems([""]);
+    }
+  };
 
   return (
-    <div className="p-6 max-w-5/6 mx-auto">
+    <div className="p-6 max-w-5/6 mx-auto text-gray-200">
       <h2 className="text-xl font-bold mb-4">Assign Accessories</h2>
-      <div className="">
-        <select 
-          className="w-full p-2 border rounded-md mb-2" 
-          onChange={(e) => handleUserChange(e.target.value)}
-          value={user}
-        >
-          <option value="">Select User</option>
+      <div className="max-w-1/3">
+        <select  className="w-full p-2 border rounded-md mb-2 bg-[#322D3C]" onChange={(e) => handleUserChange(e.target.value)} value={user}>
+          <option disabled selected value="">Select User</option>
           <option value="user1">User 1</option>
           <option value="user2">User 2</option>
         </select>
       </div>
       <div className="grid grid-cols-4 gap-4">
         {items.map((item, index) => (
-          <div key={index} className="">
-            <select 
-              className="w-full p-2 border rounded-md" 
-              onChange={(e) => handleItemChange(index, e.target.value)}
-              value={item}
-            >
-              <option value="">Select Item</option>
+          <div key={index}>
+            <select className="w-full p-2 border rounded-md bg-[#302F3E] mb-2"onChange={(e) => handleItemChange(index, e.target.value)} value={item}>
+              <option selected disabled value="">Select Item</option>
               <option value="item1">Item 1</option>
               <option value="item2">Item 2</option>
             </select>
+            {item && (
+              <button
+                className="mt-2 p-1 bg-red-500 text-white rounded-md hover:bg-red-600" onClick={() => handleDeleteItem(index)}>
+                Delete
+              </button>
+            )}
           </div>
         ))}
       </div>
-      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={handleAddMore} >
-        Add More
-      </button>
-      <DeleteBtnSm/>
+      {addmore && (
+        <button
+          className="mt-4 p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+          onClick={handleAddMore}
+        >
+          Add More
+        </button>
+      )}
     </div>
   );
 };

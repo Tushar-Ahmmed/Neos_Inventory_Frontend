@@ -38,9 +38,9 @@ const DashBoardPage = () => {
     return (
         <Layout>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
-                    {(AllUsers.length < 0)?<DashboardSkeleton/> :<TotalUsers/>}
-                    {(AllDevices.length < 0)?<DashboardSkeleton/> :<TotalDevices/>}
-                    {(AllUnassignedDevices.length < 0)?<DashboardSkeleton/> :<TotalUnassigned/>} 
+                    {(AllUsers.length <= 0)?<DashboardSkeleton/> :<TotalUsers/>}
+                    {(AllDevices.length <= 0)?<DashboardSkeleton/> :<TotalDevices/>}
+                    {(AllUnassignedDevices.length <= 0)?<DashboardSkeleton/> :<TotalUnassigned/>} 
                 </div>
 
                 {/* Menu */}
