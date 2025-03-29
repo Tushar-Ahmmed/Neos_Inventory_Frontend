@@ -14,7 +14,22 @@ const AccessoriesStore = create((set)=>({
         }
     },
 
+    AssignAccessoriesResponse:{},
+    AssignAccessoriesRequest: async(token,userEmail,AccessoryIds)=>{
+      console.log('Called');
+      console.log(userEmail);
+      console.log(AccessoryIds);      
+        let res = await axios.patch(`/api/assignaccessory/${userEmail}`,{"AccessoryIds":AccessoryIds}, {
+            headers: {
+              'authorization': token,
+            }
+          })
+        set({AssignAccessoriesResponse:res.data})
+    },
+
 }))
+
+
 
 
 export default AccessoriesStore;

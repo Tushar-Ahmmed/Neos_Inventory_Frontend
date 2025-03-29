@@ -4,7 +4,8 @@ import UserStore from './../store/UserStore';
 
 
 const AssignInventory = () => {
-  const { AllAccessories } = AccessoriesStore();
+  const { AllAccessories,AssignAccessoriesRequest,AssignAccessoriesResponse } = AccessoriesStore();
+
   const { AllUsers } = UserStore();
   const [user, setUser] = useState("");
   const [items, setItems] = useState([""]);
@@ -28,22 +29,23 @@ const AssignInventory = () => {
     const newItems = [...items];
     newItems.splice(index, 1);
     setItems(newItems);
+
     if(newItems.length === 0) {
       setAddmore(false);
       setItems([""]);
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(user);
-    console.log(items);
-    // const AccessoryIds = items.map((item) => item._id);
-    // console.log(AccessoryIds);
-    // console.log(user);
-    // console.log(items);
-    // console.log(AllUsers);
-    // console.log(AllAccessories);
+  const handleSubmit = async () => {
+    const response = await AssignAccessoriesRequest(localStorage.getItem("TOKEN"),user,items)
+    if(response){
+      alert(response.message)
+    }
+    else{
+      console.log("No Response");
+      alert("No Response");
+    }
+
   }
 
   return (
@@ -65,11 +67,12 @@ const AssignInventory = () => {
         {items.map((item, index) => (
           <div key={index}>
             <select className="w-full p-2 border rounded-md bg-[#302F3E] mb-2"onChange={(e) => handleItemChange(index, e.target.value)} value={item}>
-              <option selected disabled value="">Select Item</option>
+            <option disabled selected>Select Item</option>
               {AllAccessories.map((accessory, index) => (
                 <option key={index} value={accessory._id}>{`${accessory.Brand} ${accessory.Category.Title}`}</option>
               ))}
             </select>
+
             {item && (
               <button className="mt-2 p-1 bg-[#EC5A69] text-white rounded-md hover:bg-red-600" onClick={() => handleDeleteItem(index)}>
                 Delete
