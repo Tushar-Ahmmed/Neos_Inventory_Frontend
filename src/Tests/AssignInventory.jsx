@@ -4,7 +4,7 @@ import UserStore from './../store/UserStore';
 
 
 const AssignInventory = () => {
-  const { AllAccessories,AssignAccessoriesRequest,AssignAccessoriesResponse} = AccessoriesStore();
+  const { AllAccessories } = AccessoriesStore();
   const { AllUsers } = UserStore();
   const [user, setUser] = useState("");
   const [items, setItems] = useState([""]);
@@ -31,34 +31,12 @@ const AssignInventory = () => {
     const newItems = [...items];
     newItems.splice(index, 1);
     setItems(newItems);
+
     if(newItems.length === 0) {
       setAddmore(false);
       setItems([""]);
     }
   };
-
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    console.log(user);
-    console.log(items);
-    await AssignAccessoriesRequest( localStorage.getItem("TOKEN"), items,user)
-    setMessageTrigger(true);
-    setClickTrigger(clickTrigger + 1);
-    setItems([""]);
-    setUser("");
-  }
-
-  useEffect(() => {
-    if (messageTrigger) {
-      if (AssignAccessoriesResponse.status === "Success") {
-        alert("Accessories assigned successfully");
-      } else {
-        alert("Failed to assign accessories");
-      }
-      setMessageTrigger(false);
-    }
-}, [clickTrigger]);
-
 
   return (
     <div className="p-6 max-w-5/6 mx-auto text-gray-200">
@@ -80,10 +58,10 @@ const AssignInventory = () => {
           <div key={index}>
             <select className="w-full p-2 border rounded-md bg-[#302F3E] mb-2"onChange={(e) => handleItemChange(index, e.target.value)} value={item}>
               <option selected disabled value="">Select Item</option>
-              {AllAccessories.map((accessory, index) => (
-                <option key={index} value={accessory._id}>{`${accessory.Brand} ${accessory.Category.Title}`}</option>
-              ))}
+              <option value="item1">Item 1</option>
+              <option value="item2">Item 2</option>
             </select>
+
             {item && (
               <button className="mt-2 p-1 bg-[#EC5A69] text-white rounded-md hover:bg-red-600" onClick={() => handleDeleteItem(index)}>
                 Delete
