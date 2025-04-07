@@ -4,7 +4,7 @@ import UserStore from './../store/UserStore';
 
 
 const AssignInventory = () => {
-  const { AllAccessories } = AccessoriesStore();
+  const { AllAccessories,AssignAccessoriesRequest,AssignAccessoriesResponse} = AccessoriesStore();
   const { AllUsers } = UserStore();
   const [user, setUser] = useState("");
   const [items, setItems] = useState([""]);
@@ -31,12 +31,34 @@ const AssignInventory = () => {
     const newItems = [...items];
     newItems.splice(index, 1);
     setItems(newItems);
-
     if(newItems.length === 0) {
       setAddmore(false);
       setItems([""]);
     }
   };
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    const isConfirmed = window.confirm(`Are you sure you want to Assign ${items.length ==1 ? "This" : "These"} item?`);
+    if (!isConfirmed) return;
+    await AssignAccessoriesRequest( localStorage.getItem("TOKEN"), items,user)
+    setMessageTrigger(true);
+    setClickTrigger(clickTrigger + 1);
+    setItems([""]);
+    setUser("");
+  }
+
+  useEffect(() => {
+    if (messageTrigger) {
+      if (AssignAccessoriesResponse.status === "Success") {
+        alert("Accessories assigned successfully");
+      } else {
+        alert(JSON.stringify(AssignAccessoriesResponse));
+      }
+      setMessageTrigger(false);
+    }
+}, [clickTrigger]);
+
 
   return (
     <div className="p-6 max-w-5/6 mx-auto text-gray-200">
@@ -44,7 +66,7 @@ const AssignInventory = () => {
 
       <div className="max-w-1/3">
         <label htmlFor="email" className="block mb-2">User Email</label>
-        <input list="users" id="email" name="email" className="w-full p-2 border rounded-md mb-2 bg-[#322D3C]" onChange={(e) => handleUserChange(e.target.value)} value={user} />
+        <input required list="users" id="email" name="email" className="w-full p-2 border rounded-md mb-2 bg-[#322D3C]" onChange={(e) => handleUserChange(e.target.value)} value={user} />
         <datalist id="users">
           {AllUsers.map((user, index) => (
             <option key={index} value={user.Email} />
@@ -56,12 +78,12 @@ const AssignInventory = () => {
       <div className="grid grid-cols-4 gap-4">
         {items.map((item, index) => (
           <div key={index}>
-            <select className="w-full p-2 border rounded-md bg-[#302F3E] mb-2"onChange={(e) => handleItemChange(index, e.target.value)} value={item}>
-              <option selected disabled value="">Select Item</option>
-              <option value="item1">Item 1</option>
-              <option value="item2">Item 2</option>
+            <select  disabled={user === ""} className={`w-full p-2 border rounded-md bg-[#302F3E] mb-2`} onChange={(e) => handleItemChange(index, e.target.value)} value={item}>
+              <option disabled value="">Select Item</option>
+              {AllAccessories.map((accessory, index) => (
+                <option key={index} value={accessory._id}>{`${accessory.Brand} ${accessory.Category.Title}`}</option>
+              ))}
             </select>
-
             {item && (
               <button className="mt-2 p-1 bg-[#EC5A69] text-white rounded-md hover:bg-red-600" onClick={() => handleDeleteItem(index)}>
                 Delete

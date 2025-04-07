@@ -13,6 +13,17 @@ const AccessoriesStore = create((set)=>({
             set({AllAccessories:res.data['data']})
         }
     },
+    AssignAccessoriesResponse:[],
+    AssignAccessoriesRequest: async(token, accessoriesIDsArray, Email)=>{
+        let res = await axios.patch(`/api/assignaccessory/${Email}`,{"AccessoryIds":accessoriesIDsArray}, {
+            headers: {
+              'authorization': token,
+            }
+          })
+        if(res){
+            set({AssignAccessoriesResponse:res.data})
+        }
+    },
 
 }))
 
