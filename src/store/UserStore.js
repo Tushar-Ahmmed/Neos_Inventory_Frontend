@@ -12,7 +12,24 @@ const UserStore = create((set)=>({
         if(res.data['status'] === 'Success'){
             set({AllUsers:res.data['data']})
         }
-    }
+    },
+
+    user:{},
+    userRequest: async(token,email)=>{
+      
+        let res = await axios.get(`/api/userinfo/${email}`, {
+            headers: {
+              'authorization': token,
+            }
+          })
+          
+        if(res.data['status'] === 'Success'){
+            set({user:res.data});            
+        }
+        else{
+          set({user:res.data})
+        }
+    },
 
 }))
 

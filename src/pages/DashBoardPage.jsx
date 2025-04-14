@@ -61,7 +61,7 @@ const DashBoardPage = () => {
                 </div>
 
                 {/* END Menu */}
-                {(AllAccessories.length <=0)?<AccessoriesSkeleton/>:<AccessoriesComponent/>}
+                {(AllAccessories.length <= 0)?<AccessoriesSkeleton/>:<AccessoriesComponent/>}
         </Layout>
     );
 };

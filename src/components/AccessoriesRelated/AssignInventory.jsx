@@ -1,6 +1,6 @@
-import React, { use, useState,useEffect } from "react";
-import AccessoriesStore from "../store/AccessoriesStore";
-import UserStore from './../store/UserStore';
+import React, { useState,useEffect } from "react";
+import AccessoriesStore from "../../store/AccessoriesStore";
+import UserStore from '../../store/UserStore';
 
 
 const AssignInventory = () => {
@@ -11,13 +11,23 @@ const AssignInventory = () => {
   const [addmore, setAddmore] = useState(false);
   const [messageTrigger, setMessageTrigger] = useState(false);
   const [clickTrigger, setClickTrigger] = useState(0);
-  const [clickTrigger2, setClickTrigger2] = useState(1);
+  const [localAccessories, setLocalAccessories] = useState(AllAccessories);
 
   const handleUserChange = (value) => {
     setUser(value);
   };
 
   const handleItemChange = (index, value) => {
+
+    if(items.includes(value)) {
+      alert("Item already selected");
+      return;
+    }
+    let updatedAccessories = localAccessories
+    const objectIndex = updatedAccessories.findIndex((obj) => obj._id === value);
+    updatedAccessories[objectIndex].Quantity -= 1; // Update quantity immutably
+    setLocalAccessories(updatedAccessories); // Update state with new accessories array
+      
     const newItems = [...items];
     newItems[index] = value;
     setItems(newItems);
@@ -28,6 +38,13 @@ const AssignInventory = () => {
     setItems([...items, ""]);
   };
   const handleDeleteItem = (index) => {
+    const value = items[index];
+    let updatedAccessories = localAccessories
+    const objectIndex = updatedAccessories.findIndex((obj) => obj._id === value);
+    updatedAccessories[objectIndex].Quantity += 1; // Update quantity immutably
+    setLocalAccessories(updatedAccessories); // Update state with new accessories array
+
+
     const newItems = [...items];
     newItems.splice(index, 1);
     setItems(newItems);
@@ -37,8 +54,7 @@ const AssignInventory = () => {
     }
   };
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
+  const handleSubmit = async() => {
     const isConfirmed = window.confirm(`Are you sure you want to Assign ${items.length ==1 ? "This" : "These"} item?`);
     if (!isConfirmed) return;
     await AssignAccessoriesRequest( localStorage.getItem("TOKEN"), items,user)
@@ -46,6 +62,7 @@ const AssignInventory = () => {
     setClickTrigger(clickTrigger + 1);
     setItems([""]);
     setUser("");
+    setAddmore(false);
   }
 
   useEffect(() => {
@@ -80,8 +97,8 @@ const AssignInventory = () => {
           <div key={index}>
             <select  disabled={user === ""} className={`w-full p-2 border rounded-md bg-[#302F3E] mb-2`} onChange={(e) => handleItemChange(index, e.target.value)} value={item}>
               <option disabled value="">Select Item</option>
-              {AllAccessories.map((accessory, index) => (
-                <option key={index} value={accessory._id}>{`${accessory.Brand} ${accessory.Category.Title}`}</option>
+              {localAccessories.map((accessory, index) => (
+                <option key={index} value={accessory._id} disabled={accessory.Quantity <= 0} >{`${accessory.Brand} ${accessory.Category.Title} ${accessory.Quantity}`} </option>
               ))}
             </select>
             {item && (
@@ -100,7 +117,7 @@ const AssignInventory = () => {
       )}
 
       {addmore && (
-        <input onClick={handleSubmit} type="submit" value="Submit" className=" border mx-4 p-2  rounded-md hover:bg-[#3A112E] active:bg-[#243540]" />
+        <input disabled={(user === "" || items[0] === "") } onClick={handleSubmit} type="submit" value="Submit" className=" border mx-4 p-2  rounded-md hover:bg-[#3A112E] active:bg-[#243540]" />
       )}
     </div>
   );

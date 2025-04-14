@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import AssignInventory from '../Tests/AssignInventory';
+import AssignInventory from './AccessoriesRelated/AssignInventory';
+import UnassignAccessories from './AccessoriesRelated/UnassignAccessories';
 
 
 const AccessoriesMenuComponent = () => {
@@ -24,7 +25,7 @@ const AccessoriesMenuComponent = () => {
                 <div className="dropdown-item cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update Accessory</div>
                 <div className="dropdown-item cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Delete Accessory</div>
                 <div onClick={() => clicked(<AssignInventory/>)} className="dropdown-item cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Assign Accessory</div>
-                <div className="dropdown-item cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Un-Assign Accessory</div>
+                <div onClick={() => clicked(<UnassignAccessories/>)} className="dropdown-item cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Un-Assign Accessory</div>
                 <div className="dropdown-item cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Increase Quantity</div>
                 <div className="dropdown-item cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Decrease Quantity</div>
             </div>
