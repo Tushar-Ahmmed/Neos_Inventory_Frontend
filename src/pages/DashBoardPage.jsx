@@ -1,29 +1,31 @@
-import React, { useEffect} from 'react'
-import Layout from '../layouts/Layout'
-import DashboardSkeleton from '../skeletons/DashboardSkeleton'
-import TotalDevices from '../components/TotalDevices'
-import TotalUnassigned from '../components/TotalUnassigned'
-import TotalUsers from '../components/TotalUsers.jsx'
-import UserStore from '../store/UserStore.js'
-import DeviceStore from '../store/DeviceStore.js'
-import AccessoriesStore from '../store/AccessoriesStore.js'
-import AccessoriesSkeleton from './../skeletons/AccessoriesSkeleton'
-import AccessoriesComponent from './../components/AccessoriesComponent'
-import DeviceMenuComponent from '../components/DeviceMenuComponent.jsx'
-import AccessoriesMenuComponent from '../components/AccessoriesMenuComponent.jsx'
-import UsersMenuComponent from '../components/UsersMenuComponent.jsx'
-import CategoryMenuComponent from '../components/CategoryMenuComponent.jsx'
-import AdministratorMenuComponent from '../components/AdministratorMenuController.jsx'
+import React, { useEffect} from 'react';
+import Layout from '../layouts/Layout';
+import DashboardSkeleton from '../skeletons/DashboardSkeleton';
+import TotalDevices from '../components/TotalDevices';
+import TotalUnassigned from '../components/TotalUnassigned';
+import TotalUsers from '../components/TotalUsers.jsx';
+import UserStore from '../store/UserStore.js';
+import DeviceStore from '../store/DeviceStore.js';
+import AccessoriesStore from '../store/AccessoriesStore.js';
+import AccessoriesSkeleton from './../skeletons/AccessoriesSkeleton';
+import AccessoriesComponent from './../components/AccessoriesComponent';
+import DeviceMenuComponent from '../components/DeviceMenuComponent.jsx';
+import AccessoriesMenuComponent from '../components/AccessoriesMenuComponent.jsx';
+import UsersMenuComponent from '../components/UsersMenuComponent.jsx';
+import CategoryMenuComponent from '../components/CategoryMenuComponent.jsx';
+import AdministratorMenuComponent from '../components/AdministratorMenuController.jsx';
+import CategoryStore from '../store/CategoryStore.js';
 
 import { useAuth } from '../contexts/AuthContext';
 
 
 const DashBoardPage = () => {
-    const {TotalUsersRequest,AllUsers} = UserStore()
-    const{AllDevicesRequest,AllDevices,AllUnassignedDeviceRequests, AllUnassignedDevices} = DeviceStore()
-    const{AllAccessoriesRequest,AllAccessories} = AccessoriesStore()
-    const token = localStorage.getItem("TOKEN")
-    const {optionRender} = useAuth()
+    const {TotalUsersRequest,AllUsers} = UserStore();
+    const{AllDevicesRequest,AllDevices,AllUnassignedDeviceRequests, AllUnassignedDevices} = DeviceStore();
+    const{AllAccessoriesRequest,AllAccessories} = AccessoriesStore();
+    const {AllCategoriesRequest} = CategoryStore();
+    const token = localStorage.getItem("TOKEN");
+    const {optionRender} = useAuth();
 
     useEffect(()=>{
         (async()=>{
@@ -31,6 +33,7 @@ const DashBoardPage = () => {
          await AllDevicesRequest(token)
          await AllUnassignedDeviceRequests(token)
          await AllAccessoriesRequest(token)
+         await AllCategoriesRequest(token)
         })()
       },[])
 
