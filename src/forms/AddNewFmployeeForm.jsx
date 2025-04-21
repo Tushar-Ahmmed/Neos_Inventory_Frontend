@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import UserStore from '../store/UserStore';
 
 const AddNewFmployeeForm = () => {
-  const [formData, setFormData] = useState({
-    Enroll: '',
-    Email: '',
-    Full_Name: '',
-    Unit: '',
-    Department: '',
-    Designation: '',
-    Phone: [],
+    const { AddUserResponseRequest, AddUserResponse } = UserStore();
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [messageTrigger, setMessageTrigger] = useState(0);
+
+    const [formData, setFormData] = useState({
+        Enroll: '',
+        Email: '',
+        Full_Name: '',
+        Unit: '',
+        Department: '',
+        Designation: '',
+        Phone: [],
   });
 
   const handleChange = (e) => {
@@ -31,10 +36,35 @@ const AddNewFmployeeForm = () => {
       }));
     }
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(formData); // or send to backend
+    const isConfirmed = window.confirm(`Are you sure you want to add this employee?`);
+    if (!isConfirmed) return;
+    setIsSubmitted(true);
+    await AddUserResponseRequest(localStorage.getItem("TOKEN"), formData);
+    setMessageTrigger((prev) => prev + 1);
+
   };
+
+  useEffect(() => {
+    if (isSubmitted && AddUserResponse.status === "Success") {
+      alert(AddUserResponse.message);
+      setIsSubmitted(false);
+      setFormData({
+        Enroll: '',
+        Email: '',
+        Full_Name: '',
+        Unit: '',
+        Department: '',
+        Designation: '',
+        Phone: [],
+      });
+    }
+    if (isSubmitted && AddUserResponse.status === "Error") {
+      alert(AddUserResponse.message);
+      setIsSubmitted(false);
+    }
+  }, [messageTrigger]);
 
   return (
     <form

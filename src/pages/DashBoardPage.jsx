@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useRef} from 'react';
 import Layout from '../layouts/Layout';
 import DashboardSkeleton from '../skeletons/DashboardSkeleton';
 import TotalDevices from '../components/TotalDevices';
@@ -25,7 +25,8 @@ const DashBoardPage = () => {
     const{AllAccessoriesRequest,AllAccessories} = AccessoriesStore();
     const {AllCategoriesRequest} = CategoryStore();
     const token = localStorage.getItem("TOKEN");
-    const {optionRender} = useAuth();
+    const {optionRender,setIsScrolledUnder} = useAuth();
+    const targetRef = useRef(null);
 
     useEffect(()=>{
         (async()=>{
@@ -38,9 +39,29 @@ const DashBoardPage = () => {
       },[])
 
 
+      useEffect(() => {
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            setIsScrolledUnder(!entry.isIntersecting);
+          },
+          {
+            root: null,
+            threshold: 1,
+            rootMargin: '-70px 0px 0px 0px'
+          }
+        );
+    
+        if (targetRef.current) observer.observe(targetRef.current);
+    
+        return () => {
+          if (targetRef.current) observer.unobserve(targetRef.current);
+        };
+      }, [setIsScrolledUnder]);
+
+
     return (
         <Layout>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
+                <div ref={targetRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
                     {(AllUsers.length <= 0)?<DashboardSkeleton/> :<TotalUsers/>}
                     {(AllDevices.length <= 0)?<DashboardSkeleton/> :<TotalDevices/>}
                     {(AllUnassignedDevices.length <= 0)?<DashboardSkeleton/> :<TotalUnassigned/>} 

@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('authTokenExpiration') || null);
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [optionRender, setOptionRender] = useState()
+  const [isScrolledUnder, setIsScrolledUnder] = useState(false);
 
 
   // Function to handle login
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout, isAuthenticated, setOptionRender, optionRender }}>
+    <AuthContext.Provider value={{ token, login, logout, isAuthenticated, setOptionRender, optionRender, setIsScrolledUnder, isScrolledUnder }}>
       {children}
     </AuthContext.Provider>
   );

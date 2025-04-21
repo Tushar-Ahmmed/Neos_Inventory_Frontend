@@ -31,6 +31,24 @@ const UserStore = create((set)=>({
         }
     },
 
+    AddUserResponse:{},
+    AddUserResponseRequest: async(token,formData)=>{
+      
+        let res = await axios.post(`/api/adduser`, formData, {
+            headers: {
+              'authorization': token,
+            }
+          })
+          
+        if(res.data['status'] === 'Success'){
+            set({AddUserResponse:res.data});            
+        }
+        else{
+          set({AddUserResponse:res.data})
+        }
+    },
+
+
 }))
 
 
