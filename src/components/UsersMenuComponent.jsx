@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext';
 import AddNewFmployeeForm from '../forms/AddNewFmployeeForm';
+import UpdateUserInfoForm from '../forms/UpdateUserInfoForm';
 
 
 const UsersMenuComponent = () => {
@@ -20,7 +21,7 @@ const UsersMenuComponent = () => {
             <div className={`dropdown-items mt-2 ${isOpen ? 'block' : 'hidden'} transition-all duration-300 ease-in-out text-gray-100`} id="dropdown">
                 <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">All Users</div>
                 <div onClick={()=>{clicked(<AddNewFmployeeForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Add New User</div>
-                <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update User Info</div>
+                <div onClick={()=>{clicked(<UpdateUserInfoForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update User Info</div>
                 <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Add User Description</div>
                 <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update User Description</div>
                 <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Get User Info</div>

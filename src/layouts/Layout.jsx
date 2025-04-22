@@ -6,7 +6,7 @@ const Layout = (props) => {
     const {isScrolledUnder} = useAuth();
     return (
         <div className='container mx-auto bg-gradient-to-b from-[#3B0D2D] via-[#172A36] to-[#160C24] px-5 py-5 min-h-screen'>
-            <div className={`navbar sticky top-5 shadow-lg rounded-box z-[1] ${isScrolledUnder ? 'bg-base-100 text-[#39102D]' : 'bg-transparent text-neutral-content'} `}>
+            <div className={`navbar sticky top-5 shadow-lg rounded-box z-[1] ${isScrolledUnder ? 'bg-[#ffffff4D] bg-opacity-[10] text-[#39102D]' : 'bg-transparent text-neutral-content'} `}>
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
