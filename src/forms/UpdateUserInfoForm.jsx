@@ -5,6 +5,8 @@ const UpdateUserInfoForm = () => {
     const { AllUsers} = UserStore();
     const [userEmail,setUserEmail] = useState("");
     const [userInfo, setUserInfo] = useState();
+    const [alterNativePhone, setAlterNativePhone] = useState(false);
+    const [phoneLength, setPhoneLength] = useState(userInfo?.Phone.length || 0);
 
 
     const handleChange = (e) => {
@@ -26,26 +28,44 @@ const UpdateUserInfoForm = () => {
             setUserInfo({Email,Full_Name,Enroll,Unit,Department,Designation,Phone});
                     
             alert(`User Found: ${selectedUser.Email}`);
+
              
         } else {
             alert('User not found');
         }
     };
 
-    const handlePhoneChange = (e) => {
+    const handlePhoneChange = (e, index) => {
         const { value } = e.target;
-        const phoneNumbers = value.split(',').map((num) => num.trim());
-        setUserInfo((prevUserInfo) => ({
-            ...prevUserInfo,
-            Phone: phoneNumbers,
-        }));
+        setUserInfo((prevUserInfo) => {
+            const updatedPhone = [...prevUserInfo.Phone]; // clone to maintain immutability
+            updatedPhone[index] = value;
+            return {
+                ...prevUserInfo,
+                Phone: updatedPhone,
+            };
+        });
     };
 
-    useEffect(() => {
-        if (userInfo) {
-            console.log(userInfo);
-        }
-    }, [userInfo]);
+    const handleUpdateSubmit = (e) => {
+        e.preventDefault();
+         userInfo.Phone = userInfo.Phone.filter((phone)=> phone !== "");
+
+        console.log(userInfo);
+        setAlterNativePhone(!alterNativePhone);
+        setPhoneLength(userInfo.Phone.length);
+    }
+
+    const alternativeToggle = () => {
+        setAlterNativePhone(!alterNativePhone);
+        setPhoneLength(0);
+    }
+
+    // useEffect(() => {
+    //     if (userInfo) {
+    //         console.log(userInfo);
+    //     }
+    // }, [userInfo]);
 
     return (
         <div className='grid grid-cols-3 gap-4'>
@@ -72,14 +92,14 @@ const UpdateUserInfoForm = () => {
 
              {userInfo && (
                 <div className='col-span-2 border border-gray-300 rounded-md'>
-                <form className="max-w-full p-6 rounded-md space-y-4">
+                <form onSubmit={handleUpdateSubmit} className="max-w-full p-6 rounded-md space-y-4">
                     <div className="flex space-x-4 mb-4">
                         <div className="flex-1">
                             <div className="text-gray-300">
                                 <label htmlFor="SelectUser" className="block text-sm font-medium text-gray-300 mb-1">
                                     Email
                                 </label>
-                                <input type="text" id="Email" name="Email" value={userInfo?.Email} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]" placeholder="Email" required />
+                                <input type="email" id="Email" name="Email" value={userInfo?.Email} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]" placeholder="Email" required />
                             </div>
                         </div>
 
@@ -88,7 +108,10 @@ const UpdateUserInfoForm = () => {
                             <input
                                 id="Enroll"
                                 name="Enroll"
-                                type="number" required
+                                type="text" 
+                                pattern="^[1-9]\d*$"
+                                maxLength="6"
+                                required
                                 value={userInfo?.Enroll}
                                 onChange={handleChange}
                                  placeholder="Enroll"
@@ -139,6 +162,7 @@ const UpdateUserInfoForm = () => {
                                 type="text" required
                                 value={userInfo?.Designation}
                                 onChange={handleChange}
+
                                 className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]"/>
                         </div>
                     </div>
@@ -149,15 +173,33 @@ const UpdateUserInfoForm = () => {
                                 <label htmlFor="Phone" className="block text-sm font-medium text-gray-300 mb-1">
                                 Phone
                                 </label>
-                                <input type="text" id="Phone" name="Phone" value={userInfo?.Phone[0]} onChange={handlePhoneChange} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]" placeholder="Phone" required />
+                                <input
+                                    type="text"
+                                    id="PhonePrimary"
+                                    name="Phone"
+                                    pattern="^01[3-9]\d{8}$"
+                                    value={userInfo?.Phone[0] || ''}
+                                    onChange={(e) => handlePhoneChange(e, 0)}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]"
+                                    placeholder="Phone"
+                                    required/>
                             </div>
                         </div>
-                        {
-                            userInfo.Phone.length > 1 && (
+                        
+                      {
+                            (phoneLength > 1 || alterNativePhone) && (
                                 <div className="flex-1">
                                     <div className="text-gray-300">
                                         <label htmlFor="Phone" className="block text-sm font-medium text-gray-300 mb-1"> Alternative Phone </label>
-                                        <input type="text" id="Phone" name="Phone" value={userInfo?.Phone[1]} onChange={handlePhoneChange} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]" placeholder="Alternative Phone" required />
+                                        <input
+                                            type="text"
+                                            id="PhoneAlt"
+                                            name="Phone"
+                                            pattern="^01[3-9]\d{8}$"
+                                            value={userInfo?.Phone[1] || ''}
+                                            onChange={(e) => handlePhoneChange(e, 1)}
+                                            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]"
+                                            placeholder="Alternative Phone"/>
                                     </div>
                                 </div>
                             )
@@ -168,11 +210,13 @@ const UpdateUserInfoForm = () => {
                             <button type="submit" className="w-full text-white border py-2 px-4 rounded active:bg-[#372B3C] transition-colors">Update User Info</button>
                         </div>
                     </div>
-
-
-
-
-                    
+                    {
+                            (userInfo.Phone.length <= 1 || userInfo.Phone[1]==="") && (
+                                <div className=" text-gray-300">
+                                    <button type="button" onClick={() => alternativeToggle()} className=" text-white border py-1 px-1 text-[10px] rounded active:bg-[#372B3C] transition-colors"> {alterNativePhone?"Remove Alternative Phone": "Add Alternative Phone"}</button>
+                                </div>
+                            )
+                        }                    
                 </form>
             </div>
              )}         
