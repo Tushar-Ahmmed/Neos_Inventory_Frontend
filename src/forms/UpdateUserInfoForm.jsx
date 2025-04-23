@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import UserStore from '../store/UserStore';
 
 const UpdateUserInfoForm = () => {
@@ -24,12 +24,29 @@ const UpdateUserInfoForm = () => {
         if (selectedUser) {
             const {Email,Full_Name,Enroll,Unit,Department,Designation,Phone} = selectedUser;
             setUserInfo({Email,Full_Name,Enroll,Unit,Department,Designation,Phone});
-
+                    
             alert(`User Found: ${selectedUser.Email}`);
+             
         } else {
             alert('User not found');
         }
-    }
+    };
+
+    const handlePhoneChange = (e) => {
+        const { value } = e.target;
+        const phoneNumbers = value.split(',').map((num) => num.trim());
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            Phone: phoneNumbers,
+        }));
+    };
+
+    useEffect(() => {
+        if (userInfo) {
+            console.log(userInfo);
+        }
+    }, [userInfo]);
+
     return (
         <div className='grid grid-cols-3 gap-4'>
             <div className='col-span-1 '>
@@ -74,6 +91,7 @@ const UpdateUserInfoForm = () => {
                                 type="number" required
                                 value={userInfo?.Enroll}
                                 onChange={handleChange}
+                                 placeholder="Enroll"
                                 className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]"/>
                         </div>
                     </div>
@@ -85,7 +103,7 @@ const UpdateUserInfoForm = () => {
                                 <label htmlFor="Full_Name" className="block text-sm font-medium text-gray-300 mb-1">
                                     Full_Name
                                 </label>
-                                <input type="text" id="Full_Name" name="Full_Name" value={userInfo?.Full_Name} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]" placeholder="Email" required />
+                                <input type="text" id="Full_Name" name="Full_Name" value={userInfo?.Full_Name} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]" placeholder="Full Name" required />
                             </div>
                         </div>
 
@@ -97,6 +115,7 @@ const UpdateUserInfoForm = () => {
                                 type="text" required
                                 value={userInfo?.Unit}
                                 onChange={handleChange}
+                                placeholder="Unit"
                                 className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]"/>
                         </div>
                     </div>
@@ -108,7 +127,7 @@ const UpdateUserInfoForm = () => {
                                 <label htmlFor="Department" className="block text-sm font-medium text-gray-300 mb-1">
                                 Department
                                 </label>
-                                <input type="text" id="Department" name="Department" value={userInfo?.Department} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]" placeholder="Email" required />
+                                <input type="text" id="Department" name="Department" value={userInfo?.Department} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]" placeholder="Department" required />
                             </div>
                         </div>
 
@@ -130,9 +149,19 @@ const UpdateUserInfoForm = () => {
                                 <label htmlFor="Phone" className="block text-sm font-medium text-gray-300 mb-1">
                                 Phone
                                 </label>
-                                <input type="text" id="Phone" name="Phone" value={userInfo?.Phone} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]" placeholder="Email" required />
+                                <input type="text" id="Phone" name="Phone" value={userInfo?.Phone[0]} onChange={handlePhoneChange} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]" placeholder="Phone" required />
                             </div>
                         </div>
+                        {
+                            userInfo.Phone.length > 1 && (
+                                <div className="flex-1">
+                                    <div className="text-gray-300">
+                                        <label htmlFor="Phone" className="block text-sm font-medium text-gray-300 mb-1"> Alternative Phone </label>
+                                        <input type="text" id="Phone" name="Phone" value={userInfo?.Phone[1]} onChange={handlePhoneChange} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]" placeholder="Alternative Phone" required />
+                                    </div>
+                                </div>
+                            )
+                        }
 
                         <div className="flex-1 text-gray-300">
                             <label htmlFor="Designation" className="block text-sm font-medium text-[#253440]">{"."}</label>
