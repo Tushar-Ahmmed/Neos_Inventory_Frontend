@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import UserStore from '../store/UserStore';
+import _ from 'lodash';
 
 const UpdateUserInfoForm = () => {
-    const { AllUsers} = UserStore();
+    const { AllUsers, UpdateUserRequest, UpdateUserResponse} = UserStore();
     const [userEmail,setUserEmail] = useState("");
     const [userInfo, setUserInfo] = useState();
+    const [previousUserInfo, setPreviousUserInfo] = useState();
     const [alterNativePhone, setAlterNativePhone] = useState(false);
-    const [phoneLength, setPhoneLength] = useState(userInfo?.Phone.length || 0);
+    const [messageTrigger, setMessageTrigger] = useState(0);
+
+
 
 
     const handleChange = (e) => {
@@ -26,7 +30,7 @@ const UpdateUserInfoForm = () => {
         if (selectedUser) {
             const {Email,Full_Name,Enroll,Unit,Department,Designation,Phone} = selectedUser;
             setUserInfo({Email,Full_Name,Enroll,Unit,Department,Designation,Phone});
-                    
+            setPreviousUserInfo({Email,Full_Name,Enroll,Unit,Department,Designation,Phone});      
             alert(`User Found: ${selectedUser.Email}`);
 
              
@@ -38,8 +42,11 @@ const UpdateUserInfoForm = () => {
     const handlePhoneChange = (e, index) => {
         const { value } = e.target;
         setUserInfo((prevUserInfo) => {
-            const updatedPhone = [...prevUserInfo.Phone]; // clone to maintain immutability
+            let updatedPhone = [...prevUserInfo.Phone]; // clone to maintain immutability
             updatedPhone[index] = value;
+            if(value === ""){
+                updatedPhone = updatedPhone.filter((phone)=> phone !== "");
+            }
             return {
                 ...prevUserInfo,
                 Phone: updatedPhone,
@@ -47,25 +54,48 @@ const UpdateUserInfoForm = () => {
         });
     };
 
-    const handleUpdateSubmit = (e) => {
+    const handleUpdateSubmit = async(e) => {
         e.preventDefault();
-         userInfo.Phone = userInfo.Phone.filter((phone)=> phone !== "");
+        const isConfirmed = window.confirm(`Are you sure you want to update this user?`);
+        if (!isConfirmed) return;
+        const isEqual = _.isEqual(userInfo, previousUserInfo);
 
-        console.log(userInfo);
+        if (isEqual) {
+            alert("No changes made to the user info.");
+            return;
+        }
+        await UpdateUserRequest(localStorage.getItem("TOKEN"),userEmail, userInfo);
+        setMessageTrigger((prev) => prev + 1);
         setAlterNativePhone(!alterNativePhone);
-        setPhoneLength(userInfo.Phone.length);
+        setUserInfo()
     }
+
+    useEffect(() => {
+        if (messageTrigger && UpdateUserResponse.status === "Success") {
+            alert(UpdateUserResponse.message);
+            setUserInfo();
+            setUserEmail("");
+            setAlterNativePhone(false);
+            setPreviousUserInfo({});
+            setMessageTrigger(0);
+        }
+        if (messageTrigger && UpdateUserResponse.status === "Error") {
+            alert(UpdateUserResponse.message);
+            setUserInfo();
+            setUserEmail("");
+            setAlterNativePhone(false);
+            setPreviousUserInfo({});
+            setMessageTrigger(0);
+        }
+    }, [messageTrigger]);
 
     const alternativeToggle = () => {
         setAlterNativePhone(!alterNativePhone);
-        setPhoneLength(0);
-    }
+        if(userInfo.Phone.length === 2){
+            userInfo.Phone = userInfo.Phone.filter((phone)=> phone !== "");
+        }
 
-    // useEffect(() => {
-    //     if (userInfo) {
-    //         console.log(userInfo);
-    //     }
-    // }, [userInfo]);
+    }
 
     return (
         <div className='grid grid-cols-3 gap-4'>
@@ -178,7 +208,7 @@ const UpdateUserInfoForm = () => {
                                     id="PhonePrimary"
                                     name="Phone"
                                     pattern="^01[3-9]\d{8}$"
-                                    value={userInfo?.Phone[0] || ''}
+                                    value={userInfo?.Phone?.[0] || ''}
                                     onChange={(e) => handlePhoneChange(e, 0)}
                                     className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]"
                                     placeholder="Phone"
@@ -187,7 +217,7 @@ const UpdateUserInfoForm = () => {
                         </div>
                         
                       {
-                            (phoneLength > 1 || alterNativePhone) && (
+                            (userInfo?.Phone?.length > 1 || alterNativePhone) && (
                                 <div className="flex-1">
                                     <div className="text-gray-300">
                                         <label htmlFor="Phone" className="block text-sm font-medium text-gray-300 mb-1"> Alternative Phone </label>
@@ -196,7 +226,7 @@ const UpdateUserInfoForm = () => {
                                             id="PhoneAlt"
                                             name="Phone"
                                             pattern="^01[3-9]\d{8}$"
-                                            value={userInfo?.Phone[1] || ''}
+                                            value={userInfo?.Phone?.[1] || '' }
                                             onChange={(e) => handlePhoneChange(e, 1)}
                                             className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]"
                                             placeholder="Alternative Phone"/>
@@ -211,7 +241,7 @@ const UpdateUserInfoForm = () => {
                         </div>
                     </div>
                     {
-                            (userInfo.Phone.length <= 1 || userInfo.Phone[1]==="") && (
+                            (userInfo?.Phone?.length <= 1) && (
                                 <div className=" text-gray-300">
                                     <button type="button" onClick={() => alternativeToggle()} className=" text-white border py-1 px-1 text-[10px] rounded active:bg-[#372B3C] transition-colors"> {alterNativePhone?"Remove Alternative Phone": "Add Alternative Phone"}</button>
                                 </div>

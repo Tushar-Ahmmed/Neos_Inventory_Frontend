@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import UserStore from '../store/UserStore';
 
 const AddNewFmployeeForm = () => {
-    const { AddUserResponseRequest, AddUserResponse } = UserStore();
+    const { AddNewEmployeeRequest, AddNewEmployeeResponse } = UserStore();
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [messageTrigger, setMessageTrigger] = useState(0);
 
@@ -41,14 +41,14 @@ const AddNewFmployeeForm = () => {
     const isConfirmed = window.confirm(`Are you sure you want to add this employee?`);
     if (!isConfirmed) return;
     setIsSubmitted(true);
-    await AddUserResponseRequest(localStorage.getItem("TOKEN"), formData);
+    await AddNewEmployeeRequest(localStorage.getItem("TOKEN"), formData);
     setMessageTrigger((prev) => prev + 1);
 
   };
 
   useEffect(() => {
-    if (isSubmitted && AddUserResponse.status === "Success") {
-      alert(AddUserResponse.message);
+    if (isSubmitted && AddNewEmployeeResponse.status === "Success") {
+      alert(AddNewEmployeeResponse.message);
       setIsSubmitted(false);
       setFormData({
         Enroll: '',
@@ -60,8 +60,8 @@ const AddNewFmployeeForm = () => {
         Phone: [],
       });
     }
-    if (isSubmitted && AddUserResponse.status === "Error") {
-      alert(AddUserResponse.message);
+    if (isSubmitted && AddNewEmployeeResponse.status === "Error") {
+      alert(AddNewEmployeeResponse.message);
       setIsSubmitted(false);
     }
   }, [messageTrigger]);

@@ -31,8 +31,8 @@ const UserStore = create((set)=>({
         }
     },
 
-    AddUserResponse:{},
-    AddUserResponseRequest: async(token,formData)=>{
+    AddNewEmployeeResponse:{},
+    AddNewEmployeeRequest: async(token,formData)=>{
       
         let res = await axios.post(`/api/adduser`, formData, {
             headers: {
@@ -41,10 +41,27 @@ const UserStore = create((set)=>({
           })
           
         if(res.data['status'] === 'Success'){
-            set({AddUserResponse:res.data});            
+            set({AddNewEmployeeResponse:res.data});            
         }
         else{
-          set({AddUserResponse:res.data})
+          set({AddNewEmployeeResponse:res.data})
+        }
+    },
+
+    UpdateUserResponse:{},
+    UpdateUserRequest: async(token,user, formData)=>{
+      
+        let res = await axios.put(`/api/updateuser/${user}`, formData, {
+            headers: {
+              'authorization': token,
+            }
+          })
+          
+        if(res.data['status'] === 'Success'){
+            set({UpdateUserResponse:res.data});            
+        }
+        else{
+          set({UpdateUserResponse:res.data})
         }
     },
 
