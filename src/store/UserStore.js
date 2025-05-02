@@ -48,6 +48,24 @@ const UserStore = create((set)=>({
         }
     },
 
+    AddUserDescriptionResponse:{},
+    AddUserDescriptionRequest: async(token, email, formData)=>{
+      
+        let res = await axios.post(`/api/adduserdescription/${email}`, formData, {
+            headers: {
+              'authorization': token,
+            }
+          })
+          
+        if(res.data['status'] === 'Success'){
+            set({AddUserDescriptionResponse:res.data});            
+        }
+        else{
+          set({AddUserDescriptionResponse:res.data})
+        }
+    },
+
+
     UpdateUserResponse:{},
     UpdateUserRequest: async(token,user, formData)=>{
       
@@ -62,6 +80,61 @@ const UserStore = create((set)=>({
         }
         else{
           set({UpdateUserResponse:res.data})
+        }
+    },
+
+    UpdateUserDescriptionResponse:{},
+    UpdateUserDescriptionRequest: async(token, user, formData)=>{
+      
+        let res = await axios.put(`/api/updateuserdescription/${user}`, formData, {
+            headers: {
+              'authorization': token,
+            }
+          })
+          
+        if(res.data['status'] === 'Success'){
+            set({UpdateUserDescriptionResponse:res.data});            
+        }
+        else{
+          set({UpdateUserDescriptionResponse:res.data})
+        }
+    },
+
+    GetUserDescriptionResponse:{},
+    GetUserDescriptionRequest: async(token,userId)=>{
+      
+        let res = await axios.get(`/api/finduserdescription/${userId}`, {
+            headers: {
+              'authorization': token,
+            }
+          })
+          
+        if(res.data['status'] === 'Success'){
+            set({GetUserDescriptionResponse:res.data});
+            return res.data;           
+        }
+        else{
+          set({GetUserDescriptionResponse:res.data})
+          return res.data;
+        }
+    },
+
+
+    GetUserFullInfoResponse:{},
+    GetUserFullInfoRequest: async(token,email)=>{
+      
+        let res = await axios.get(`/api/userfullinfo/${email}`, {
+            headers: {
+              'authorization': token,
+            }
+          })
+  
+        if(res.data['status'] === 'Success'){
+            set({GetUserFullInfoResponse:res.data});       
+        }
+        else{
+          set({GetUserFullInfoResponse:res.data})
+
         }
     },
 

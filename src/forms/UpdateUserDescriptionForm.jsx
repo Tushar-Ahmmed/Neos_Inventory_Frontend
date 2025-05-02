@@ -1,10 +1,10 @@
 import React, { useEffect, useState,useRef } from 'react';
 import UserStore from '../store/UserStore';
-import _ from 'lodash';
+import _, { set } from 'lodash';
 
 
-const AddEmployeeDescriptions = () => {
-    const { AllUsers, GetUserDescriptionRequest, AddUserDescriptionRequest,AddUserDescriptionResponse} = UserStore();
+const UpdateUserDescriptionForm = () => {
+    const { AllUsers, GetUserDescriptionRequest,UpdateUserDescriptionRequest,UpdateUserDescriptionResponse} = UserStore();
     const [userEmail,setUserEmail] = useState("");
     const [userDescription, setUserDescription] = useState({
         DC_Logon_Name: "",
@@ -26,8 +26,10 @@ const AddEmployeeDescriptions = () => {
         MFA_Status: "",
     });
 
+    const [prevDescription, setPrevDescription] = useState()
     const [messageTrigger, setMessageTrigger] = useState(0);
     const [showOptions, setShowOptions] = useState(false);
+    const [userId,setUserId] = useState();
     const AllLicenses = ["Microsoft 365 F1", "Microsoft 365 E1", "Business Premium", "Microsoft 365 Business Standard", "Microsoft 365 Business Premium"];
 
 
@@ -57,35 +59,44 @@ const AddEmployeeDescriptions = () => {
         return newObj;
       };
     
-    const findUserId = (email) => {
-        const user = AllUsers.find(user => user.Email === email);
-        return user ? user._id : null;
-    };
-
+      const findUser = async(e) => {
+        e.preventDefault();
+        const isConfirmed = window.confirm(`Are you sure?`);
+        if (!isConfirmed) return;
+        const userInfo = AllUsers.find(user => user.Email === userEmail);
+        if (userInfo) {
+            setUserId(userInfo._id);
+            let description = await GetUserDescriptionRequest(localStorage.getItem("TOKEN"), userInfo._id);
+            if (description.status === "Success") {
+                setUserDescription(description.data);
+                setPrevDescription(description.data);
+            } else {
+                alert(description.message);
+            }
+        }
+        else {
+            setUserId(null);
+        }
+      }
 
     const handleUpdateSubmit = async(e) => {
         e.preventDefault();
         const isConfirmed = window.confirm(`Are you sure you want to update this user?`);
         if (!isConfirmed) return;
-        const userId = findUserId(userEmail);
-        if (!userId) {
-            alert("User not found!");
-            return;
-        }
-        const useDescription = await GetUserDescriptionRequest(localStorage.getItem("TOKEN"), userId);
-        if (useDescription.status === "Success") {
-            alert("User Description Exists!");
+        const isEqual = _.isEqual(prevDescription, userDescription);
+        if (isEqual) {
+            alert("No changes made to the user description.");
             return;
         }
         const updatedUserDescription = convertYesNoToBoolean(userDescription);
-        await AddUserDescriptionRequest(localStorage.getItem("TOKEN"), userEmail, updatedUserDescription);
+        await UpdateUserDescriptionRequest(localStorage.getItem("TOKEN"), userEmail, updatedUserDescription);
         setMessageTrigger((prev) => prev + 1);
         
     }
 
     useEffect(() => {
-        if (messageTrigger && AddUserDescriptionResponse.status === "Success") {
-            alert(AddUserDescriptionResponse.message);
+        if (messageTrigger && UpdateUserDescriptionResponse.status === "Success") {
+            alert(UpdateUserDescriptionResponse.message);
             setUserDescription({
                 DC_Logon_Name: "",
                 Join_date: "",
@@ -106,9 +117,11 @@ const AddEmployeeDescriptions = () => {
                 MFA_Status: "",
             });
             setUserEmail("");
+            setUserId(null);
+            setPrevDescription(null);
         }
-        if (messageTrigger && AddUserDescriptionResponse.status === "Error") {
-            alert(AddUserDescriptionResponse.message);
+        if (messageTrigger && UpdateUserDescriptionResponse.status === "Error") {
+            alert(UpdateUserDescriptionResponse.message);
         }
     }, [messageTrigger]);
 
@@ -137,7 +150,7 @@ const AddEmployeeDescriptions = () => {
     return (
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
             <div className='col-span-1 md:col-span-1 text-gray-300 w-full'>
-                <form className="max-w-[350px] p-6 rounded-md space-y-4 ">
+                <form onSubmit={findUser} className="max-w-[350px] p-6 rounded-md space-y-4 ">
                     <div className="text-gray-300">
                         <label htmlFor="SelectUser" className="block text-sm font-medium text-gray-300 mb-1">
                             Choose User
@@ -153,11 +166,11 @@ const AddEmployeeDescriptions = () => {
                             }
                         </select>
                     </div>
-                    
+                     <button type="submit" className=" text-white border py-1 px-2 rounded active:bg-[#372B3C] transition-colors">Find User</button>
                 </form>
             </div>
 
-             {userEmail !='' && (
+             {userId && (
                 <div className='col-span-1 md:col-span-2 border border-gray-300 rounded-md w-full'>
                 <form onSubmit={handleUpdateSubmit} className="max-w-full p-4 rounded-md space-y-3 text-gray-300">
                     {/* First Row */}
@@ -172,7 +185,7 @@ const AddEmployeeDescriptions = () => {
                         </div>
                         <div className="flex-1 min-w-[150px]">
                             <label htmlFor="_3cx" className="block text-sm font-medium text-gray-300 mb-1">3CX Extension</label>
-                            <input type="number" id="_3cx" name="_3cx" value={userDescription?.["_3cx"]} onChange={handleChange} className="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:bg-[#322D3C]" min={0} required />
+                            <input type="number" id="_3cx" name="_3cx" value={userDescription?.["_3cx"]} onChange={handleChange} className="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:bg-[#322D3C]" min={1} required />
                         </div>
                     </div>
 
@@ -291,7 +304,7 @@ const AddEmployeeDescriptions = () => {
                         </select>
                         </div>
                         <div className="flex-1 min-w-[150px] flex items-end">
-                        <button type="submit" className="w-full text-white border py-2 px-4 rounded active:bg-[#372B3C] transition-colors">Add Description</button>
+                        <button type="submit" className="w-full text-white border py-2 px-4 rounded active:bg-[#372B3C] transition-colors">Update Description</button>
                         </div>
                     </div>
                 </form>
@@ -301,4 +314,4 @@ const AddEmployeeDescriptions = () => {
     );
 };
 
-export default AddEmployeeDescriptions;
+export default UpdateUserDescriptionForm;
