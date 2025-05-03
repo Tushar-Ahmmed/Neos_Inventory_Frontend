@@ -65,6 +65,7 @@ const CreateAccessoryForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 shadow-md rounded-md space-y-4">
+      <h2 className="text-2xl font-semibold text-[#FD4075] text-center">Create Accessory</h2>
       <div className="text-gray-300">
         <label htmlFor="SelectCategory" className="block text-sm font-medium text-gray-300 mb-1">
           Category
@@ -148,7 +149,7 @@ const CreateAccessoryForm = () => {
       <button
         type="submit"
         className="w-full text-white border py-2 px-4 rounded active:bg-[#372B3C] transition-colors">
-        Submit
+        Create
       </button>
     </form>
   );

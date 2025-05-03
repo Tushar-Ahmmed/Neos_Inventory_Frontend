@@ -139,6 +139,7 @@ const AddEmployeeDescriptions = () => {
             <div className='col-span-1 md:col-span-1 text-gray-300 w-full'>
                 <form className="max-w-[350px] p-6 rounded-md space-y-4 ">
                     <div className="text-gray-300">
+                        <h2 className="text-2xl font-semibold text-[#FD4075] mb-5">Add Employee Description</h2>
                         <label htmlFor="SelectUser" className="block text-sm font-medium text-gray-300 mb-1">
                             Choose User
                         </label>

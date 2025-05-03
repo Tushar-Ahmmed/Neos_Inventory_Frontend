@@ -31,9 +31,7 @@ const UpdateUserInfoForm = () => {
             const {Email,Full_Name,Enroll,Unit,Department,Designation,Phone} = selectedUser;
             setUserInfo({Email,Full_Name,Enroll,Unit,Department,Designation,Phone});
             setPreviousUserInfo({Email,Full_Name,Enroll,Unit,Department,Designation,Phone});      
-            alert(`User Found: ${selectedUser.Email}`);
-
-             
+                         
         } else {
             alert('User not found');
         }
@@ -102,10 +100,9 @@ const UpdateUserInfoForm = () => {
             <div className='col-span-1 '>
                 <form onSubmit={findUser} className="max-w-[350px] p-6 rounded-md space-y-4">
                     <div className="text-gray-300">
-                        <label htmlFor="SelectUser" className="block text-sm font-medium text-gray-300 mb-1">
-                            User
-                        </label>
-                        <select id="SelectUser" name="SelectUser" value={userEmail} onChange={changeOption} className=" w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:bg-[#322D3C]">
+                        <h1 className='text-3xl mb-4'></h1>
+                        <h2 class="text-2xl font-semibold text-[#FD4075] mb-5">Update User Info...</h2>
+                        <select id="SelectUser" name="SelectUser" value={userEmail} onChange={changeOption} className=" w-full border border-gray-300 rounded px-3 text-sm focus:outline-none focus:bg-[#322D3C]">
                             <option disabled value="">Select User</option>
                             {
                                 AllUsers.length > 0 ? AllUsers.map((user, index) => (
@@ -116,7 +113,7 @@ const UpdateUserInfoForm = () => {
                             }
                         </select>
                     </div>
-                    <button type="submit" className=" text-white border py-1 px-2 rounded active:bg-[#372B3C] transition-colors">Find User</button>
+                    <button type="submit" className=" text-white border px-2 rounded active:bg-[#372B3C] transition-colors">Find User</button>
                 </form>
             </div>
 

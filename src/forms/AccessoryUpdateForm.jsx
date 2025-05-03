@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import AccessoriesStore from '../store/AccessoriesStore';
+import _ from 'lodash';
 
 const AccessoryUpdateForm = () => {
     const {AllAccessories,UpdateAccessoryResponse,UpdateAccessoryRequest} = AccessoriesStore();
@@ -11,7 +12,13 @@ const AccessoryUpdateForm = () => {
 
     const [formData, setFormData] = useState({
         Brand: "",
-        Quantity: ""
+        Quantity: "",
+        Title: "",
+    });
+    const [oldFormData, setOldFormData] = useState({
+        Brand: "",
+        Quantity: "",
+        Title: "",
     });
 
     const handleChange = (e) => {
@@ -29,11 +36,18 @@ const AccessoryUpdateForm = () => {
             setFormData({
                 Brand: selectedAccessory.Brand,
                 Quantity: selectedAccessory.Quantity,
+                Title:selectedAccessory.Title,
+            });
+            setOldFormData({
+                Brand: selectedAccessory.Brand,
+                Quantity: selectedAccessory.Quantity,
+                Title:selectedAccessory.Title,
             });
         } else {
             setFormData({
                 Brand: "",
                 Quantity: "",
+                Title: "",
             });
         }
     }
@@ -42,19 +56,16 @@ const AccessoryUpdateForm = () => {
         e.preventDefault();
         const isConfirmed = window.confirm(`Are you sure you want to update this accessory?`);
         if (!isConfirmed) return;
+
+        const equalityCheck = _.isEqual(formData, oldFormData);
+        if (equalityCheck) {
+            alert("No changes made to the accessory data.");
+            return;
+        }
+
+        await UpdateAccessoryRequest(localStorage.getItem("TOKEN"), selectedAccessoryID, formData);
         setHasSubmitted(true);
         setMessageTrigger((prev) => prev + 1);
-        // Add your update logic here
-        await UpdateAccessoryRequest(localStorage.getItem("TOKEN"), selectedAccessoryID, formData);
-        
-       if (UpdateAccessoryResponse) {
-        setSelectAccessoryID("");
-        setAccessorySelected(false);
-        setFormData({
-            Brand: "",
-            Quantity: ""
-            });
-        }
     };
 
     useEffect(() => {
@@ -72,6 +83,13 @@ const AccessoryUpdateForm = () => {
         if (hasSubmitted && UpdateAccessoryResponse.status === "Success") {
             alert(UpdateAccessoryResponse.message);
             setHasSubmitted(false);
+            setSelectAccessoryID("");
+            setAccessorySelected(false);
+            setFormData({
+                Brand: "",
+                Quantity: "",
+                Title: "",
+                });
         }
         if (hasSubmitted && UpdateAccessoryResponse.status === "Error") {
             alert(UpdateAccessoryResponse.message);
@@ -83,6 +101,7 @@ const AccessoryUpdateForm = () => {
     return (
         <div>
              <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 shadow-md rounded-md space-y-4">
+                <h2 className="text-2xl font-semibold text-[#FD4075] text-center mb-5">Update Accessory</h2>
                 <div className="text-gray-300">
                     <label htmlFor="SelectAccessory" className="block text-sm font-medium text-gray-300 mb-1">
                     Accessory
@@ -97,7 +116,7 @@ const AccessoryUpdateForm = () => {
                     <option value="" disabled>Select Accessory</option>
                     {AllAccessories && AllAccessories.map((accessory, index) => (
                         <option key={index} value={accessory._id} >
-                            {accessory.Brand} {accessory.Category.Title}
+                            {accessory.Brand} {accessory.Title}
                         </option>
                     ))}
                     </select>
@@ -128,6 +147,20 @@ const AccessoryUpdateForm = () => {
                             id="Quantity"
                             required
                             value={formData.Quantity}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1"
+                            />
+                        </div>
+                        <div className="text-gray-300">
+                            <label htmlFor="Quantity" className="block text-sm font-medium text-gray-300 mb-1">
+                            Title
+                            </label>
+                            <input
+                            type="text"
+                            name="Title"
+                            id="Title"
+                            required
+                            value={formData.Title}
                             onChange={handleChange}
                             className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1"
                             />

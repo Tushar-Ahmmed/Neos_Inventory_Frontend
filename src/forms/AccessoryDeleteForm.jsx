@@ -42,6 +42,7 @@ const AccessoryDeleteForm = () => {
         <div>
              <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 shadow-md rounded-md space-y-4">
                 <div className="text-gray-300">
+                    <h2 class="text-2xl font-semibold text-[#FD4075] text-center mb-5">Accessory Delete</h2>
                     <label htmlFor="SelectAccessory" className="block text-sm font-medium text-gray-300 mb-1">
                     Accessory
                     </label>
@@ -55,13 +56,13 @@ const AccessoryDeleteForm = () => {
                     <option value="" disabled>Select Accessory</option>
                     {AllAccessories && AllAccessories.map((accessory, index) => (
                         <option key={index} value={accessory._id} >
-                            {accessory.Brand} {accessory.Category.Title}
+                            {accessory.Brand} {accessory.Title}
                         </option>
                     ))}
                     </select>
                 </div>
                 <button type="submit" disabled={selectedAccessoryID === ""} className={`w-full text-white border py-2 mt-4 px-4 rounded active:bg-[#372B3C] transition-colors duration-200 ${selectedAccessoryID ? "bg-[#EC5A69] hover:bg-red-600" : "cursor-not-allowed"}  `}> 
-                        Submit
+                        Delete
                 </button>
             </form>
         </div>

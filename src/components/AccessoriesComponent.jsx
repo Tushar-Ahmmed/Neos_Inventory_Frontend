@@ -12,7 +12,7 @@ const AccessoriesComponent = () => {
                         return(
                             <div key={index} className="bg-red-50 card card-border bg-white-300 w-full place-items-center">
                                 <div className="card-body">
-                                    <h2 className="card-title">{item.Category.Title}</h2>
+                                    <h2 className="card-title">{item.Title}</h2>
                                     <h2 className="card-title">Quantity:{item.Quantity} </h2>
                                 </div>
                             </div>

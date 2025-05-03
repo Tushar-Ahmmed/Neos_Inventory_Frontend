@@ -71,7 +71,29 @@ const UpdateUserDescriptionForm = () => {
                 setUserDescription(description.data);
                 setPrevDescription(description.data);
             } else {
+                setUserId(null);
                 alert(description.message);
+                setUserDescription(
+                    {
+                        DC_Logon_Name: "",
+                        Join_date: "",
+                        _3cx: "",
+                        Mail_Box_Type: "",
+                        Mail_Box_Database: "",
+                        Office: "",
+                        Country: "",
+                        Reports_To: "",
+                        OS_Type: "",
+                        OS_Family: "",
+                        OS_License: "",
+                        Licenses: [],
+                        Printer_Access: "",
+                        Wifi_Access: "",
+                        VPN_Access: "",
+                        USB_Permission: "",
+                        MFA_Status: "",
+                    }
+                )
             }
         }
         else {
@@ -151,6 +173,7 @@ const UpdateUserDescriptionForm = () => {
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
             <div className='col-span-1 md:col-span-1 text-gray-300 w-full'>
                 <form onSubmit={findUser} className="max-w-[350px] p-6 rounded-md space-y-4 ">
+                    <h2 className="text-2xl font-semibold text-[#FD4075] mb-5">Update User Description</h2>
                     <div className="text-gray-300">
                         <label htmlFor="SelectUser" className="block text-sm font-medium text-gray-300 mb-1">
                             Choose User

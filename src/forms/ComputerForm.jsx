@@ -71,8 +71,7 @@ const ComputerForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-full mx-auto p-6 bg-[#ffffff0d] rounded-lg shadow-lg text-gray-100">
-        <h2 className="text-2xl font-semibold text-gray-100 text-center">Add New Computer</h2>
-
+        <h2 className="text-2xl font-semibold text-[#FD4075] text-center mb-4">Add New Computer</h2>
       <div className="flex space-x-4 mb-4">
         <div className="flex-1">
           <label htmlFor="Type" className="block text-sm font-medium text-gray-100">Type</label>

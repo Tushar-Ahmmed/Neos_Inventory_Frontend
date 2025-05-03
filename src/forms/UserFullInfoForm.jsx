@@ -1,8 +1,10 @@
 import React, { useState,useEffect, use } from 'react';
 import UserStore from '../store/UserStore';
-import { set } from 'lodash';
+import AccessoriesStore from '../store/AccessoriesStore';
 const UserFullInfoForm = () => {
     const { AllUsers,GetUserFullInfoRequest,GetUserFullInfoResponse} = UserStore();
+    const {AllAccessories} = AccessoriesStore();
+
     const [userEmail, setUserEmail] = React.useState("");
     const [messageTrigger, setMessageTrigger] = useState(0);
     const [UserDevices, setUserDevices] = useState([]);
@@ -28,8 +30,7 @@ const UserFullInfoForm = () => {
 
     }
     useEffect(() => {
-        if(GetUserFullInfoResponse.status === "Success"){
-            console.log("Triggered");
+        if(GetUserFullInfoResponse.status === "Success" && hasSubmitted){
             const { Devices: User_Devices, Accessories: User_Accessories, User_Des: User_Description, ...User_Info } = GetUserFullInfoResponse.data[0];
             setUserDevices(User_Devices);
             setUserAccessories(User_Accessories);
@@ -41,18 +42,39 @@ const UserFullInfoForm = () => {
             setShowUserDevices(true);
             setShowUserAccessories(true);
         }
-        else if(GetUserFullInfoResponse.status === "Failed"){
+        else if(GetUserFullInfoResponse.status === "Failed" && hasSubmitted){
+
+            setShowUserInfo(false);
+            setShowUserDescription(false);
+            setShowUserDevices(false);
+            setShowUserAccessories(false);
+
             let userData = AllUsers.find((user) => user.Email === userEmail);
             const { Devices: User_Devices, Accessories: User_Accessories, ...User_Info } = userData;
-
             const {Email,Enroll,Full_Name,Unit,Department,Designation,Phone} = User_Info
             setUserInfo({Email,Enroll,Full_Name,Unit,Department,Designation,Phone});
+            setShowUserInfo(true);
 
-            setUserDevices(User_Devices);
-            setUserAccessories(User_Accessories);
-            alert("User Description Not Found")
+            if(User_Devices.length > 0){
+                setShowUserDevices(true);
+                setUserDevices(User_Devices);
+            }
+            else{
+                setShowUserDevices(false);
+                setUserDevices([]);
+            }
+
+            if(User_Accessories.length > 0){
+                const Accessories = AllAccessories.filter((accessory) => User_Accessories.includes(accessory._id));
+                setShowUserAccessories(true);
+                setUserAccessories(Accessories);
+            }
+            else{
+                setShowUserAccessories(false);
+                setUserAccessories([]);
+            }
         }
-        else if(GetUserFullInfoResponse.status === "Error"){
+        else if(GetUserFullInfoResponse.status === "Error" && hasSubmitted){
             alert("Error Occured")
             setShowUserDescription(false);
             setShowUserDevices(false);
@@ -65,11 +87,9 @@ const UserFullInfoForm = () => {
         <div className='w-full flex flex-col items-center justify-center'>
             <div className='w-full flex flex-col items-center justify-center'>
                 <form onSubmit={findUser} className="max-w-2/6 p-0 rounded-md ">
+                    <h2 className="text-2xl font-semibold text-[#FD4075] text-center mb-5">User Full Information</h2>
                     <div className="text-gray-300">
-                        <label htmlFor="SelectUser" className="block text-sm font-medium text-gray-300 mb-1">
-                            Choose User
-                        </label>
-                        <input required list="users" id="email" name="email" className="p-0 border rounded-md mb-2 mr-2 bg-[#322D3C]" onChange={(e) => handleUserChange(e.target.value)} value={userEmail} />
+                        <input required list="users" id="email" name="email" className="p-0 border rounded-md mb-2 mr-2 bg-[#322D3C] text-sm" onChange={(e) => handleUserChange(e.target.value)} value={userEmail} />
                         <datalist id="users">
                             {AllUsers.map((user, index) => (
                             <option key={index} value={user.Email} />
@@ -83,7 +103,7 @@ const UserFullInfoForm = () => {
             {showUserInfo && hasSubmitted && (
                 <div className='w-full flex flex-col mb-4'>
                 <div className="text-gray-300">
-                    <h2 className="text-xl font-bold mb-4">User's Full Information</h2>
+                    <h2 className="text-xl font-bold  mb-4">User's Basic Information</h2>
                     <table className="min-w-full bg-transparent border overflow-hidden">
                         <tbody className="text-gray-300">
                             {Object.entries(UserInfo).map(([key, value]) => (
@@ -137,6 +157,7 @@ const UserFullInfoForm = () => {
                                 Accessories
                                 </td>
                             )}
+                           
                             <td className="py-0 px-4 border">{accessory.Title}</td>
                             </tr>
                         ))}

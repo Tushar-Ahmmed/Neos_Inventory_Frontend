@@ -79,11 +79,11 @@ const AssignInventory = () => {
 
   return (
     <div className="p-6 max-w-5/6 mx-auto text-gray-200">
-      <h2 className="text-xl font-bold mb-4">Assign Accessories</h2>
-
+      <h2 class="text-2xl font-semibold text-[#FD4075] text-center mb-5">Assign Accessories</h2>
+      <div className="mb-4"></div>
       <div className="max-w-1/3">
         <label htmlFor="email" className="block mb-2">User Email</label>
-        <input required list="users" id="email" name="email" className="w-full p-2 border rounded-md mb-2 bg-[#322D3C]" onChange={(e) => handleUserChange(e.target.value)} value={user} />
+        <input required list="users" id="email" name="email" className="w-full border rounded-md mb-2 bg-[#322D3C]" onChange={(e) => handleUserChange(e.target.value)} value={user} />
         <datalist id="users">
           {AllUsers.map((user, index) => (
             <option key={index} value={user.Email} />
@@ -95,10 +95,10 @@ const AssignInventory = () => {
       <div className="grid grid-cols-4 gap-4">
         {items.map((item, index) => (
           <div key={index}>
-            <select  disabled={user === ""} className={`w-full p-2 border rounded-md bg-[#302F3E] mb-2`} onChange={(e) => handleItemChange(index, e.target.value)} value={item}>
+            <select  disabled={user === ""} className={`w-full border rounded-md bg-[#302F3E] mb-2`} onChange={(e) => handleItemChange(index, e.target.value)} value={item}>
               <option disabled value="">Select Item</option>
               {localAccessories.map((accessory, index) => (
-                <option key={index} value={accessory._id} disabled={accessory.Quantity <= 0} >{`${accessory.Brand} ${accessory.Category.Title} ${accessory.Quantity}`} </option>
+                <option key={index} value={accessory._id} disabled={accessory.Quantity <= 0} >{`${accessory.Brand} ${accessory.Title} ${accessory.Quantity}`} </option>
               ))}
             </select>
             {item && (
