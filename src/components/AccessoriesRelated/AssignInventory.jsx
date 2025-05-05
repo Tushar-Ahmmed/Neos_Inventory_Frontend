@@ -79,7 +79,7 @@ const AssignInventory = () => {
 
   return (
     <div className="p-6 max-w-5/6 mx-auto text-gray-200">
-      <h2 class="text-2xl font-semibold text-[#FD4075] text-center mb-5">Assign Accessories</h2>
+      <h2 className="text-2xl font-semibold text-[#FD4075] text-center mb-5">Assign Accessories</h2>
       <div className="mb-4"></div>
       <div className="max-w-1/3">
         <label htmlFor="email" className="block mb-2">User Email</label>

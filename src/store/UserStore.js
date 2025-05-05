@@ -139,6 +139,25 @@ const UserStore = create((set)=>({
     },
 
 
+    DeleueEmployeeResponse:{},
+    DeleueEmployeeRequest: async(token,email)=>{
+      
+        let res = await axios.delete(`/api/deleteuser/${email}`, {
+            headers: {
+              'authorization': token,
+            }
+          })
+  
+        if(res.data['status'] === 'Success'){
+            set({DeleueEmployeeResponse:res.data});       
+        }
+        else{
+          set({DeleueEmployeeResponse:res.data})
+
+        }
+    },
+
+
 }))
 
 
