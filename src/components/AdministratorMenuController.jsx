@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
+import CreateAdminForm from '../forms/CreateAdminForm'
+import { useAuth } from '../contexts/AuthContext'
 
 
 const AdministratorMenuComponent = () => {
+    const {setOptionRender} = useAuth()
     const [isOpen, setIsOpen] = useState(false)
 
     const toggleDropdown = () => {
@@ -15,7 +18,7 @@ const AdministratorMenuComponent = () => {
             <button className="dropdown-btn px-2 py-0.5 bg-transparent border-gradient-reverse text-gray-300 text-left" onClick={toggleDropdown}>Administrator Menu</button>
         
             <div className={`dropdown-items mt-2 ${isOpen ? 'block' : 'hidden'} transition-all duration-300 ease-in-out text-gray-100`} id="dropdown">
-                <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Create Administrator</div>
+                <div onClick={()=>{clicked(<CreateAdminForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Create Administrator</div>
                 <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update Profile</div>
                 <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Find Administrator</div>
                 <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update Other Administrator</div>
