@@ -101,7 +101,7 @@ const UpdateUserInfoForm = () => {
                 <form onSubmit={findUser} className="max-w-[350px] p-6 rounded-md space-y-4">
                     <div className="text-gray-300">
                         <h1 className='text-3xl mb-4'></h1>
-                        <h2 class="text-2xl font-semibold text-[#FD4075] mb-5">Update User Info...</h2>
+                        <h2 className="text-2xl font-semibold text-[#FD4075] mb-5">Update User Info...</h2>
                         <select id="SelectUser" name="SelectUser" value={userEmail} onChange={changeOption} className=" w-full border border-gray-300 rounded px-3 text-sm focus:outline-none focus:bg-[#322D3C]">
                             <option disabled value="">Select User</option>
                             {

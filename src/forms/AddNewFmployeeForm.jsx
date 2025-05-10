@@ -70,7 +70,7 @@ const AddNewFmployeeForm = () => {
     <form
     onSubmit={handleSubmit}
     className="max-w-4xl mx-auto p-6 bg-transparent rounded-2xl space-y-4 text-white">
-    <h2 class="text-2xl font-semibold text-[#FD4075] text-center mb-5">Employee Info Form</h2>
+    <h2 className="text-2xl font-semibold text-[#FD4075] text-center mb-5">Employee Info Form</h2>
     <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-2 gap-4">
       <div>
         <label className="block mb-1 font-semibold">Enroll</label>

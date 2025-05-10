@@ -20,7 +20,6 @@ const CategoryMenuComponent = () => {
             <button className="dropdown-btn px-2 py-0.5 bg-transparent border-gradient text-gray-300 text-left" onClick={toggleDropdown}>Category Menu</button>
         
             <div className={`dropdown-items mt-2 ${isOpen ? 'block' : 'hidden'} transition-all duration-300 ease-in-out text-gray-200`} id="dropdown">
-                <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">All Categories</div>
                 <div onClick={()=>{clicked(<CreateCategoryForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Add New Category</div>
                 <div onClick={()=>{clicked(<UpdateCategoryForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update Category</div>
                 <div onClick={()=>{clicked(<DeleteCategoryForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Delete Category</div>

@@ -26,7 +26,6 @@ const DeviceMenuComponent = () => {
             <button className="dropdown-btn px-2 py-0.5 bg-transparent border-gradient-reverse text-gray-300 text-left" onClick={toggleDropdown}>Device Menu</button>
         
             <div className={`dropdown-items mt-2 ${isOpen ? 'block' : 'hidden'} transition-all duration-300 ease-in-out text-fray-200 bg-transparent`} id="dropdown">
-                <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">All Computers</div>
                 <div onClick={() => clicked(<DeviceInfoForm/>)} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Computer Information</div>
                 <div onClick={() => clicked(<ComputerForm/>)}  className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Add New Computer</div>
                 <div onClick={() => clicked(<AssignDeviceForm/>)} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Assign Computer</div>

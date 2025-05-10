@@ -24,7 +24,6 @@ const AccessoriesMenuComponent = () => {
             <button className="dropdown-btn px-2 py-0.5 bg-transparent border-gradient text-gray-300 text-left" onClick={toggleDropdown}>Accessories Menu</button>
         
             <div className={`dropdown-items mt-2 ${isOpen ? 'block' : 'hidden'} transition-all duration-300 ease-in-out text-gray-100`} id="dropdown">
-                <div className="dropdown-item cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Accessory Information</div>
                 <div onClick={()=>{clicked(<CreateAccessoryForm/>)}} className="dropdown-item cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Add New Accessory</div>
                 <div onClick={()=>{clicked(<AccessoryUpdateForm/>)}} className="dropdown-item cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update Accessory</div>
                 <div onClick={()=>{clicked(<AccessoryDeleteForm/>)}} className="dropdown-item cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Delete Accessory</div>

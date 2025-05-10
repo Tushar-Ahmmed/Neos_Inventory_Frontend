@@ -81,7 +81,7 @@ const ComputerForm = () => {
             value={formData.Type}
             onChange={handleChange}
             className="mt-1 block w-full px-4 py-2 border border-gray-100 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:bg-[#2e3c48]">
-            <option value="" disabled selected>Select Type</option>
+            <option value="" disabled>Select Type</option>
             <option value="Laptop">Laptop</option>
             <option value="Desktop">Desktop</option>
           </select>
@@ -128,7 +128,7 @@ const ComputerForm = () => {
           <select
             id="Processor" name="Processor" required value={formData.Processor} onChange={handleChange}className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:bg-[#2e3c48]"
           >
-            <option value="" disabled selected>Select Processor</option>
+            <option value="" disabled>Select Processor</option>
             <option value="Celeron">Celeron</option>
             <option value="i3">i3</option>
             <option value="i5">i5</option>
@@ -201,7 +201,7 @@ const ComputerForm = () => {
         <div className="flex-1">
           <label htmlFor="Storage_Type" className="block text-sm font-medium text-gray-100">Storage Type</label>
           <select id="Storage_Type" name="Storage_Type" required value={formData.Storage_Type} onChange={handleChange} className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:bg-[#2e3c48]">
-            <option value="" disabled selected>Select Storage Type</option>
+            <option value="" disabled>Select Storage Type</option>
             <option value="HDD">HDD</option>
             <option value="SSD">SSD</option>
           </select>
@@ -219,7 +219,7 @@ const ComputerForm = () => {
           <label htmlFor="Condition" className="block text-sm font-medium text-gray-100">Condition</label>
           <select id="Condition"
             name="Condition" required value={formData.Condition} onChange={handleChange} className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:bg-[#2e3c48]">
-            <option value="" disabled selected>Select Condition</option>
+            <option value="" disabled>Select Condition</option>
             <option value="New">New</option>
             <option value="Fresh">Fresh</option>
             <option value="Usable">Usable</option>
@@ -229,7 +229,7 @@ const ComputerForm = () => {
         <div className="flex-1">
           <label htmlFor="Warentty_Policy" className="block text-sm font-medium text-gray-100">Warranty Policy</label>
           <select id="Warentty_Policy" name="Warentty_Policy" value={formData.Warentty_Policy} onChange={handleChange} className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:bg-[#2e3c48]">
-            <option value="" disabled selected>Select Warranty</option>
+            <option value="" disabled>Select Warranty</option>
             <option value="1 Year">1 Year</option>
             <option value="1.5 Years">1.5 Years</option>
             <option value="2 Years">2 Years</option>

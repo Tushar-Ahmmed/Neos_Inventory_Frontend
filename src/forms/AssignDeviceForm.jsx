@@ -37,7 +37,7 @@ const AssignDeviceForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-1/2 mx-auto p-6 bg-[#ffffff0d] rounded-lg shadow-lg text-gray-100">
-        <h2 class="text-2xl font-semibold text-[#FD4075] text-center mb-5">Assign Computer</h2>
+        <h2 className="text-2xl font-semibold text-[#FD4075] text-center mb-5">Assign Computer</h2>
       {/* Using Flexbox to arrange two inputs in a row */}
       <div className="flex space-x-4 mb-4">
 

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import CreateAdminForm from '../forms/CreateAdminForm'
 import { useAuth } from '../contexts/AuthContext'
+import UpdateProfileForm from '../forms/UpdateProfileForm'
+import UpdateByAdminForm from '../forms/UpdateByAdminForm'
 
 
 const AdministratorMenuComponent = () => {
@@ -19,10 +21,8 @@ const AdministratorMenuComponent = () => {
         
             <div className={`dropdown-items mt-2 ${isOpen ? 'block' : 'hidden'} transition-all duration-300 ease-in-out text-gray-100`} id="dropdown">
                 <div onClick={()=>{clicked(<CreateAdminForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Create Administrator</div>
-                <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update Profile</div>
-                <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Find Administrator</div>
-                <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update Other Administrator</div>
-                <div className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Password Change</div>
+                <div onClick={()=>{clicked(<UpdateProfileForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update Profile</div>
+                <div onClick={()=>{clicked(<UpdateByAdminForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update Other Administrator</div>
             </div>
         </div>
     )

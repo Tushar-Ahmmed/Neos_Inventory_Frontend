@@ -42,7 +42,7 @@ const AccessoryDeleteForm = () => {
         <div>
              <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 shadow-md rounded-md space-y-4">
                 <div className="text-gray-300">
-                    <h2 class="text-2xl font-semibold text-[#FD4075] text-center mb-5">Accessory Delete</h2>
+                    <h2 className="text-2xl font-semibold text-[#FD4075] text-center mb-5">Accessory Delete</h2>
                     <label htmlFor="SelectAccessory" className="block text-sm font-medium text-gray-300 mb-1">
                     Accessory
                     </label>

@@ -15,6 +15,7 @@ import UsersMenuComponent from '../components/UsersMenuComponent.jsx';
 import CategoryMenuComponent from '../components/CategoryMenuComponent.jsx';
 import AdministratorMenuComponent from '../components/AdministratorMenuController.jsx';
 import CategoryStore from '../store/CategoryStore.js';
+import AdminStore from '../store/AdminStore.js';
 
 import { useAuth } from '../contexts/AuthContext';
 
@@ -26,6 +27,7 @@ const DashBoardPage = () => {
     const {AllCategoriesRequest} = CategoryStore();
     const token = localStorage.getItem("TOKEN");
     const {optionRender,setIsScrolledUnder} = useAuth();
+    const {GetAllAdminRequest} = AdminStore()
     const targetRef = useRef(null);
 
     useEffect(()=>{
@@ -35,6 +37,7 @@ const DashBoardPage = () => {
          await AllUnassignedDeviceRequests(token)
          await AllAccessoriesRequest(token)
          await AllCategoriesRequest(token)
+         await GetAllAdminRequest(token)
         })()
       },[])
 

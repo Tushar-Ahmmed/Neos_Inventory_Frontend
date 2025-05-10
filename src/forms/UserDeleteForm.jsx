@@ -47,9 +47,6 @@ const UserDeleteForm = () => {
                 return;
             }
         }
-
-        console.log("Deleting Employee: ");
-
         await DeleueEmployeeRequest(localStorage.getItem("TOKEN"), selectedEmail);
         setSelectEmail("");
         setMessageTrigger((prev) => prev + 1);
