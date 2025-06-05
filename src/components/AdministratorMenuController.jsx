@@ -3,6 +3,7 @@ import CreateAdminForm from '../forms/CreateAdminForm'
 import { useAuth } from '../contexts/AuthContext'
 import UpdateProfileForm from '../forms/UpdateProfileForm'
 import UpdateByAdminForm from '../forms/UpdateByAdminForm'
+import ReportForm from '../forms/ReportForm'
 
 
 const AdministratorMenuComponent = () => {
@@ -23,6 +24,7 @@ const AdministratorMenuComponent = () => {
                 <div onClick={()=>{clicked(<CreateAdminForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Create Administrator</div>
                 <div onClick={()=>{clicked(<UpdateProfileForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update Profile</div>
                 <div onClick={()=>{clicked(<UpdateByAdminForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Update Other Administrator</div>
+                <div onClick ={()=>{clicked(<ReportForm/>)}} className="dropdown-item bg-transparent cursor-pointer hover:bg-gray-500 active:bg-[#db6d67be]">Generate Report</div>
             </div>
         </div>
     )
