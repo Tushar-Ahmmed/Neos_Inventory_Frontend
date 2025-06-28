@@ -22,6 +22,7 @@ const UnassignAccessories = () => {
       useEffect(()=>{
         if(hasSubmitted && user){ 
           if(user.status === "Success"){
+
             if(user.data.Accessories.length === 0){
                 alert("This user has no accessories assigned");
                 setShowButton(false);
@@ -30,7 +31,8 @@ const UnassignAccessories = () => {
             }
             else{
                 (async()=>{
-                    let response = await axios.get(`http://localhost:4999/api/accessoriesdetails/${user.data.Accessories}`, {
+                    const accessoriesIds = user.data.Accessories.map((item) => item.accId);
+                    let response = await axios.get(`http://localhost:4999/api/accessoriesdetails/${accessoriesIds}`, {
                         headers: {
                             'authorization': localStorage.getItem("TOKEN"),
                         }
